@@ -20,6 +20,6 @@ namespace AirBNBAPI.Data
 
         public DbSet<AirBnb.Model.Property> Property { get; set; }
 
-        public DbSet<AirBnb.Model.User> User { get; set; }
+        public DbSet<AirBnb.Model.Customer> User { get; set; }
     }
 }

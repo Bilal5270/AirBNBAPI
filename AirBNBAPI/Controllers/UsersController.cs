@@ -16,8 +16,8 @@ namespace AirBNBAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly AirBNBAPIContext _context;
-        private readonly IUserService _userService;
-        public UsersController(AirBNBAPIContext context, IUserService userService)
+        private readonly ICustomerService _userService;
+        public UsersController(AirBNBAPIContext context, ICustomerService userService)
         {
             _context = context;
             _userService = userService;
@@ -25,14 +25,14 @@ namespace AirBNBAPI.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public IEnumerable<User> GetUser()
+        public IEnumerable<Customer> GetUser()
         {
             return _userService.GetAllUsers();
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<Customer>> GetUser(int id)
         {
 
             return _userService.GetSpecificUser(id);
@@ -41,7 +41,7 @@ namespace AirBNBAPI.Controllers
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutUser(int id, Customer user)
         {
             if (id != user.Id)
             {
@@ -72,7 +72,7 @@ namespace AirBNBAPI.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Customer>> PostUser(Customer user)
         {
             _context.User.Add(user);
             await _context.SaveChangesAsync();

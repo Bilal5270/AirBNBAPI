@@ -16,17 +16,17 @@ namespace AirBNBAPI.Repositories
             return _context.Landlord.ToList();
         }
 
-        public IEnumerable<Listing> GetAllListings()
+        public IEnumerable<Reservation> GetAllReservations()
         {
-            return _context.Listing.ToList();
+            return _context.Reservation.ToList();
         }
 
-        public IEnumerable<Property> GetAllProperties()
+        public IEnumerable<Location> GetAllLocations()
         {
-            return _context.Property.ToList();
+            return _context.Location.ToList();
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public IEnumerable<Customer> GetAllCustomers()
         {
             return _context.User.ToList();
         }
@@ -36,19 +36,19 @@ namespace AirBNBAPI.Repositories
             return _context.Landlord.Find(id);
         }
 
-        public Listing GetListing(int id)
+        public Reservation GetReservation(int id)
         {
-            return _context.Listing.Find(id);
+            return _context.Reservation.Find(id);
         }
 
-        public Property GetProperty(int id)
+        public Location GetLocation(int id)
         {
-            return _context.Property.Find(id);
+            return _context.Location.Find(id);
         }
 
-        public User GetUser(int id)
+        public Customer GetCustomer(int id)
         {
-            return _context.User.Find(id);
+            return _context.Customer.Find(id);
         }
     }
 }

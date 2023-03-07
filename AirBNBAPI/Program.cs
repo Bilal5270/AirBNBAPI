@@ -15,10 +15,10 @@ builder.Services.AddDbContext<AirBNBAPIContext>(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IUserService, UserDatabaseService>();
+builder.Services.AddScoped<ICustomerService, CustomerDatabaseService>();
 builder.Services.AddScoped<ILandlordService, LandlordDatabaseService>();
-builder.Services.AddScoped<IListingService, ListingDatabaseService>();
-builder.Services.AddScoped<IPropertyService, PropertyDatabaseService>();
+builder.Services.AddScoped<IListingService, ReservationDatabaseService>();
+builder.Services.AddScoped<ILocationService, LocationDatabaseService>();
 builder.Services.AddScoped<IAirBnBRepository, AirBnBRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

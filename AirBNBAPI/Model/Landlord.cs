@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirBNBAPI.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,14 +12,16 @@ namespace AirBnb.Model
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public int Age { get; set; }
+        public Image Image { get; set; }
+        public int AvatarId { get; set; }
 
+        List<Location> Locations { get; set; }
 
-        List<Property> Properties { get; set; }
-        List<Listing> Listings  { get; set; }
-
-        public Landlord() {
-            Properties = new List<Property>();
-            Listings = new List<Listing>();
+        public Landlord()
+        {
+            Locations = new List<Location>();
+   
         }
     }
 }
