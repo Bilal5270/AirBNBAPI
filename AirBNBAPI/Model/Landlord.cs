@@ -16,7 +16,7 @@ namespace AirBnb.Model
         public Image? Avatar { get; set; }
         public int? AvatarId { get; set; }
 
-        List<Location> Locations { get; set; }
+        public List<Location> Locations { get; set; }
 
         public Landlord()
         {
