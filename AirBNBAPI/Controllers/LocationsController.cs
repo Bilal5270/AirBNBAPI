@@ -12,47 +12,47 @@ namespace AirBNBAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ListingsController : ControllerBase
+    public class LocationsController : ControllerBase
     {
         private readonly AirBNBAPIContext _context;
 
-        public ListingsController(AirBNBAPIContext context)
+        public LocationsController(AirBNBAPIContext context)
         {
             _context = context;
         }
 
-        // GET: api/Listings
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Listing>>> GetListing()
+        // GET: api/Locations
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<IEnumerable<Location>>> GetLocation()
         {
-            return await _context.Listing.ToListAsync();
+            return await _context.Location.ToListAsync();
         }
 
-        // GET: api/Listings/5
+        // GET: api/Properties/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Listing>> GetListing(int id)
+        public async Task<ActionResult<Location>> GetLocation(int id)
         {
-            var listing = await _context.Listing.FindAsync(id);
+            var location = await _context.Location.FindAsync(id);
 
-            if (listing == null)
+            if (location == null)
             {
                 return NotFound();
             }
 
-            return listing;
+            return location;
         }
 
-        // PUT: api/Listings/5
+        // PUT: api/Properties/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutListing(int id, Listing listing)
+        public async Task<IActionResult> PutProperty(int id, Location location)
         {
-            if (id != listing.Id)
+            if (id != location.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(listing).State = EntityState.Modified;
+            _context.Entry(location).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace AirBNBAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ListingExists(id))
+                if (!LocationExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace AirBNBAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Listings
+        // POST: api/Properties
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Listing>> PostListing(Listing listing)
+        public async Task<ActionResult<Location>> PostLocation(Location location)
         {
-            _context.Listing.Add(listing);
+            _context.Location.Add(location);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetListing", new { id = listing.Id }, listing);
+            return CreatedAtAction("GetLocation", new { id = location.Id }, location);
         }
 
-        // DELETE: api/Listings/5
+        // DELETE: api/Properties/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteListing(int id)
+        public async Task<IActionResult> DeleteLocation(int id)
         {
-            var listing = await _context.Listing.FindAsync(id);
-            if (listing == null)
+            var location = await _context.Location.FindAsync(id);
+            if (location == null)
             {
                 return NotFound();
             }
 
-            _context.Listing.Remove(listing);
+            _context.Location.Remove(location);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ListingExists(int id)
+        private bool LocationExists(int id)
         {
-            return _context.Listing.Any(e => e.Id == id);
+            return _context.Location.Any(e => e.Id == id);
         }
     }
 }

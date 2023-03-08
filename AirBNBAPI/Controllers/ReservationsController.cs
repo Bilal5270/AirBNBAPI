@@ -12,47 +12,47 @@ namespace AirBNBAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PropertiesController : ControllerBase
+    public class ReservationsController : ControllerBase
     {
         private readonly AirBNBAPIContext _context;
 
-        public PropertiesController(AirBNBAPIContext context)
+        public ReservationsController(AirBNBAPIContext context)
         {
             _context = context;
         }
 
-        // GET: api/Properties
+        // GET: api/Listings
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Property>>> GetProperty()
+        public async Task<ActionResult<IEnumerable<Reservation>>> GetReservation()
         {
-            return await _context.Property.ToListAsync();
+            return await _context.Reservation.ToListAsync();
         }
 
-        // GET: api/Properties/5
+        // GET: api/Listings/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Property>> GetProperty(int id)
+        public async Task<ActionResult<Reservation>> GetReservation(int id)
         {
-            var @property = await _context.Property.FindAsync(id);
+            var reservation = await _context.Reservation.FindAsync(id);
 
-            if (@property == null)
+            if (reservation == null)
             {
                 return NotFound();
             }
 
-            return @property;
+            return reservation;
         }
 
-        // PUT: api/Properties/5
+        // PUT: api/Listings/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProperty(int id, Property @property)
+        public async Task<IActionResult> PutReservation(int id, Reservation reservation)
         {
-            if (id != @property.Id)
+            if (id != reservation.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(@property).State = EntityState.Modified;
+            _context.Entry(reservation).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace AirBNBAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PropertyExists(id))
+                if (!ReservationExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace AirBNBAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Properties
+        // POST: api/Listings
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Property>> PostProperty(Property @property)
+        public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
         {
-            _context.Property.Add(@property);
+            _context.Reservation.Add(reservation);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProperty", new { id = @property.Id }, @property);
+            return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);
         }
 
-        // DELETE: api/Properties/5
+        // DELETE: api/Listings/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProperty(int id)
+        public async Task<IActionResult> DeleteReservation(int id)
         {
-            var @property = await _context.Property.FindAsync(id);
-            if (@property == null)
+            var reservation = await _context.Reservation.FindAsync(id);
+            if (reservation == null)
             {
                 return NotFound();
             }
 
-            _context.Property.Remove(@property);
+            _context.Reservation.Remove(reservation);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool PropertyExists(int id)
+        private bool ReservationExists(int id)
         {
-            return _context.Property.Any(e => e.Id == id);
+            return _context.Reservation.Any(e => e.Id == id);
         }
     }
 }

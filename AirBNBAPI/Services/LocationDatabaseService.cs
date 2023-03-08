@@ -5,28 +5,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AirBNBAPI.Services
 {
-    public class PropertyDatabaseService : IPropertyService
+    public class LocationDatabaseService : ILocationService
     {
         private readonly IAirBnBRepository _airBnBRepository;
-        public PropertyDatabaseService(IAirBnBRepository airBnBRepository)
+        public LocationDatabaseService(IAirBnBRepository airBnBRepository)
         {
             _airBnBRepository = airBnBRepository;
         }
 
-        public Property ChangeProperty(int id, Property Property)
+        public Location ChangeLocation(int id, Location location)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Property> GetAllProperties()
+        public IEnumerable<Location> GetAllLocations()
         {
-            return _airBnBRepository.GetAllProperties();
+            return _airBnBRepository.GetAllLocations();
             
         }
 
-        public Property GetSpecificProperty(int id)
+        public Location GetSpecificLocation(int id)
         {
-            return _airBnBRepository.GetProperty(id);
+            return _airBnBRepository.GetLocation(id);
         }
 
         

@@ -13,42 +13,42 @@ namespace AirBNBAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class CustomersController : ControllerBase
     {
         private readonly AirBNBAPIContext _context;
-        private readonly IUserService _userService;
-        public UsersController(AirBNBAPIContext context, IUserService userService)
+        private readonly ICustomerService _customerService;
+        public CustomersController(AirBNBAPIContext context, ICustomerService customerService)
         {
             _context = context;
-            _userService = userService;
+            _customerService = customerService;
         }
 
         // GET: api/Users
         [HttpGet]
-        public IEnumerable<User> GetUser()
+        public IEnumerable<Customer> GetCustomer()
         {
-            return _userService.GetAllUsers();
+            return _customerService.GetAllCustomers();
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
 
-            return _userService.GetSpecificUser(id);
+            return _customerService.GetSpecificCustomer(id);
         }
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        public async Task<IActionResult> PutCustomer(int id, Customer customer)
         {
-            if (id != user.Id)
+            if (id != customer.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(customer).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +56,7 @@ namespace AirBNBAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!CustomerExists(id))
                 {
                     return NotFound();
                 }
@@ -72,33 +72,33 @@ namespace AirBNBAPI.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
-            _context.User.Add(user);
+            _context.Customer.Add(customer);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
         }
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteCustomer(int id)
         {
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
+            var customer = await _context.Customer.FindAsync(id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            _context.User.Remove(user);
+            _context.Customer.Remove(customer);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UserExists(int id)
+        private bool CustomerExists(int id)
         {
-            return _context.User.Any(e => e.Id == id);
+            return _context.Customer.Any(e => e.Id == id);
         }
     }
 }
