@@ -7,52 +7,48 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AirBNBAPI.Data;
 using AirBnb.Model;
+using AirBNBAPI.Services;
 
 namespace AirBNBAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ListingsController : ControllerBase
+    public class CustomersController : ControllerBase
     {
         private readonly AirBNBAPIContext _context;
-
-        public ListingsController(AirBNBAPIContext context)
+        private readonly ICustomerService _customerService;
+        public CustomersController(AirBNBAPIContext context, ICustomerService customerService)
         {
             _context = context;
+            _customerService = customerService;
         }
 
-        // GET: api/Listings
+        // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Listing>>> GetListing()
+        public IEnumerable<Customer> GetCustomer()
         {
-            return await _context.Listing.ToListAsync();
+            return _customerService.GetAllCustomers();
         }
 
-        // GET: api/Listings/5
+        // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Listing>> GetListing(int id)
+        public async Task<ActionResult<Customer>> GetCustomer(int id)
         {
-            var listing = await _context.Listing.FindAsync(id);
 
-            if (listing == null)
-            {
-                return NotFound();
-            }
-
-            return listing;
+            return _customerService.GetSpecificCustomer(id);
         }
 
-        // PUT: api/Listings/5
+        // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutListing(int id, Listing listing)
+        public async Task<IActionResult> PutCustomer(int id, Customer customer)
         {
-            if (id != listing.Id)
+            if (id != customer.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(listing).State = EntityState.Modified;
+            _context.Entry(customer).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +56,7 @@ namespace AirBNBAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ListingExists(id))
+                if (!CustomerExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +69,36 @@ namespace AirBNBAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Listings
+        // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Listing>> PostListing(Listing listing)
+        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
-            _context.Listing.Add(listing);
+            _context.Customer.Add(customer);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetListing", new { id = listing.Id }, listing);
+            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
         }
 
-        // DELETE: api/Listings/5
+        // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteListing(int id)
+        public async Task<IActionResult> DeleteCustomer(int id)
         {
-            var listing = await _context.Listing.FindAsync(id);
-            if (listing == null)
+            var customer = await _context.Customer.FindAsync(id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            _context.Listing.Remove(listing);
+            _context.Customer.Remove(customer);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ListingExists(int id)
+        private bool CustomerExists(int id)
         {
-            return _context.Listing.Any(e => e.Id == id);
+            return _context.Customer.Any(e => e.Id == id);
         }
     }
 }

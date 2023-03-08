@@ -23,7 +23,8 @@ namespace AirBnb.Model
         public float PricePerDay { get; set; }
         public int NumberOfGuests { get; set; }
      
-        public FlagsAttribute Type { get; set; }
+        public LocationType Type { get; set; }
+        public Features Feature { get; set; }
         public Location()
         {
             Images = new List<Image>();

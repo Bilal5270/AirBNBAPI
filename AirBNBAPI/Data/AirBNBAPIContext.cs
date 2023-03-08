@@ -16,10 +16,10 @@ namespace AirBNBAPI.Data
 
         public DbSet<AirBnb.Model.Landlord> Landlord { get; set; } = default!;
 
-        public DbSet<AirBnb.Model.Listing> Listing { get; set; }
+        public DbSet<AirBnb.Model.Reservation> Reservation { get; set; }
 
-        public DbSet<AirBnb.Model.Property> Property { get; set; }
+        public DbSet<AirBnb.Model.Location> Location{ get; set; }
 
-        public DbSet<AirBnb.Model.Customer> User { get; set; }
+        public DbSet<AirBnb.Model.Customer> Customer { get; set; }
     }
 }

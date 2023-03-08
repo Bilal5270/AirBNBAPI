@@ -4,6 +4,7 @@ using AirBNBAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirBNBAPI.Migrations
 {
     [DbContext(typeof(AirBNBAPIContext))]
-    partial class AirBNBAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20230307200200_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +60,7 @@ namespace AirBNBAPI.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AvatarId")
+                    b.Property<int>("AvatarId")
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")
@@ -72,8 +74,7 @@ namespace AirBNBAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AvatarId")
-                        .IsUnique()
-                        .HasFilter("[AvatarId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Landlord");
                 });
@@ -182,7 +183,9 @@ namespace AirBNBAPI.Migrations
                 {
                     b.HasOne("AirBNBAPI.Model.Image", "Avatar")
                         .WithOne("Landlord")
-                        .HasForeignKey("AirBnb.Model.Landlord", "AvatarId");
+                        .HasForeignKey("AirBnb.Model.Landlord", "AvatarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Avatar");
                 });

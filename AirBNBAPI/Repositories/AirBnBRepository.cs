@@ -28,7 +28,7 @@ namespace AirBNBAPI.Repositories
 
         public IEnumerable<Customer> GetAllCustomers()
         {
-            return _context.User.ToList();
+            return _context.Customer.ToList();
         }
 
         public Landlord GetLandlord(int id)
