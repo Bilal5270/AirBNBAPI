@@ -12,13 +12,13 @@ namespace AirBnb.Model
     {
         public int Id { get; set; }
 
-        public List<Image> Images { get; set; }
+        public virtual List<Image> Images { get; set; }
         public int Rooms { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public Landlord Landlord { get; set; }
-        public int LandlordId { get; set; }
-        public List<Reservation> Reservations { get; set; }
+        public virtual Landlord Landlord { get; set; }
+        public int? LandlordId { get; set; }
+        public virtual List<Reservation> Reservations { get; set; }
         public string SubTitle { get; set; }
         public float PricePerDay { get; set; }
         public int NumberOfGuests { get; set; }

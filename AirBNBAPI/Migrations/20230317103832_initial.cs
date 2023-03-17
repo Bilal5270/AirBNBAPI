@@ -31,8 +31,8 @@ namespace AirBNBAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsCover = table.Column<bool>(type: "bit", nullable: false),
-                    LocationId = table.Column<int>(type: "int", nullable: true)
+                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    IsCover = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,7 +48,7 @@ namespace AirBNBAPI.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
-                    AvatarId = table.Column<int>(type: "int", nullable: false)
+                    AvatarId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,8 +57,7 @@ namespace AirBNBAPI.Migrations
                         name: "FK_Landlord_Image_AvatarId",
                         column: x => x.AvatarId,
                         principalTable: "Image",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -70,7 +69,7 @@ namespace AirBNBAPI.Migrations
                     Rooms = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LandlordId = table.Column<int>(type: "int", nullable: false),
+                    LandlordId = table.Column<int>(type: "int", nullable: true),
                     SubTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PricePerDay = table.Column<float>(type: "real", nullable: false),
                     NumberOfGuests = table.Column<int>(type: "int", nullable: false),
@@ -84,8 +83,7 @@ namespace AirBNBAPI.Migrations
                         name: "FK_Location_Landlord_LandlordId",
                         column: x => x.LandlordId,
                         principalTable: "Landlord",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -94,9 +92,9 @@ namespace AirBNBAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LocationId = table.Column<int>(type: "int", nullable: false),
+                    LocationId = table.Column<int>(type: "int", nullable: true),
                     Discount = table.Column<float>(type: "real", nullable: false),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -107,21 +105,25 @@ namespace AirBNBAPI.Migrations
                         name: "FK_Reservation_Customer_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Reservation_Location_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Location",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Image_LocationId",
+                table: "Image",
+                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Landlord_AvatarId",
                 table: "Landlord",
                 column: "AvatarId",
-                unique: true);
+                unique: true,
+                filter: "[AvatarId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Location_LandlordId",
@@ -137,10 +139,22 @@ namespace AirBNBAPI.Migrations
                 name: "IX_Reservation_LocationId",
                 table: "Reservation",
                 column: "LocationId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Image_Location_LocationId",
+                table: "Image",
+                column: "LocationId",
+                principalTable: "Location",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Image_Location_LocationId",
+                table: "Image");
+
             migrationBuilder.DropTable(
                 name: "Reservation");
 

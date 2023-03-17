@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AirBNBAPI.Data;
 using AirBNBAPI.Services;
 using AirBNBAPI.Repositories;
-
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AirBNBAPIContext>(options =>
@@ -20,6 +20,15 @@ builder.Services.AddScoped<ILandlordService, LandlordDatabaseService>();
 builder.Services.AddScoped<IReservationService, ReservationDatabaseService>();
 builder.Services.AddScoped<ILocationService, LocationDatabaseService>();
 builder.Services.AddScoped<IAirBnBRepository, AirBnBRepository>();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
+builder.Services.AddApiVersioning(options =>
+    {
+        options.AssumeDefaultVersionWhenUnspecified = true;
+    });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

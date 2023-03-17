@@ -7,39 +7,55 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AirBNBAPI.Data;
 using AirBnb.Model;
+using AirBNBAPI.Model.DTO;
+using AutoMapper;
+using AirBNBAPI.Services;
 
 namespace AirBNBAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
+   
     public class LocationsController : ControllerBase
     {
         private readonly AirBNBAPIContext _context;
+        private readonly IMapper _mapper;
+        private readonly ILocationService _locationService;
 
-        public LocationsController(AirBNBAPIContext context)
+        public LocationsController(AirBNBAPIContext context, IMapper mapper, ILocationService locationService)
         {
             _context = context;
+            _mapper = mapper;
+            _locationService = locationService;
         }
 
         // GET: api/Locations
-        [HttpGet("GetAll")]
-        public async Task<ActionResult<IEnumerable<Location>>> GetLocation()
+        //[HttpGet("GetAll")]
+        //public IEnumerable<Location> GetLocation()
+        //{
+        //    return _locationService.GetAllLocations();
+        //}
+
+        [HttpGet]
+        public IEnumerable<LocationDto> GetLocation()
         {
-            return await _context.Location.ToListAsync();
+            return _locationService.GetAllLocations().Select(location => _mapper.Map<LocationDto>(location));
+            //return _studentService.GetAllStudents().Select(student => _mapper.Map(student));
         }
+
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Location>>> GetLocation()
+        //{
+        //    return await _context.Location.ToListAsync();
+        //}
 
         // GET: api/Properties/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Location>> GetLocation(int id)
         {
-            var location = await _context.Location.FindAsync(id);
 
-            if (location == null)
-            {
-                return NotFound();
-            }
-
-            return location;
+            return _locationService.GetSpecificLocation(id);
         }
 
         // PUT: api/Properties/5
