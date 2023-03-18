@@ -7,6 +7,11 @@ using AirBNBAPI.Data;
 using AirBNBAPI.Services;
 using AirBNBAPI.Repositories;
 using System.Text.Json.Serialization;
+using System.Reflection;
+using AirBNBAPI.Options;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AirBNBAPIContext>(options =>
@@ -28,10 +33,21 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddApiVersioning(options =>
     {
         options.AssumeDefaultVersionWhenUnspecified = true;
+        
     });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
+builder.Services.AddSwaggerGen(options =>
+{
+    // using System.Reflection;
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
+builder.Services.AddVersionedApiExplorer(setup =>
+{
+    //setup.GroupNameFormat = ''
+});
 
 var app = builder.Build();
 
@@ -39,12 +55,25 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+
+        foreach (var description in provider.ApiVersionDescriptions)
+        {
+            options.SwaggerEndpoint(
+                $"/swagger/{description.GroupName}/swagger.json",
+                description.ApiVersion.ToString()
+                );
+        }
+    });
     app.UseCors(options => options.AllowAnyHeader().AllowAnyOrigin());
 }
 
-app.UseHttpsRedirection();
 
+
+app.UseHttpsRedirection();
+ 
 app.UseAuthorization();
 
 app.MapControllers();

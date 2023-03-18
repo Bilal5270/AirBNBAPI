@@ -14,6 +14,7 @@ using AirBNBAPI.Services;
 namespace AirBNBAPI.Controllers
 {
     [Route("api/[controller]")]
+    [ApiVersion("1.0")]
     [ApiController]
 
    
@@ -31,12 +32,15 @@ namespace AirBNBAPI.Controllers
         }
 
         // GET: api/Locations
-        //[HttpGet("GetAll")]
-        //public IEnumerable<Location> GetLocation()
-        //{
-        //    return _locationService.GetAllLocations();
-        //}
-
+        [HttpGet("GetAll")]
+        public IEnumerable<Location> GetAllLocation()
+        {
+            return _locationService.GetAllLocations();
+        }
+        /// <summary>
+        /// Pulling all locations for advanced search
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<LocationDto> GetLocation()
         {
