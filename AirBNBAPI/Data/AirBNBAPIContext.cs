@@ -40,9 +40,9 @@ namespace AirBNBAPI.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Customer>().HasData(
-    new { FirstName = "Bilal", LastName = "Yousef", Email = "Bilal.youssry@gmail.com", Id = 1 },
-    new { FirstName = "Max", LastName = "Metz", Email = "maxmetz8@gmail.com", Id = 2 }
-);
+             new { FirstName = "Bilal", LastName = "Yousef", Email = "Bilal.youssry@gmail.com", Id = 1 },
+             new { FirstName = "Max", LastName = "Metz", Email = "maxmetz8@gmail.com", Id = 2 }
+                );
 
 
             modelBuilder.Entity<Landlord>().HasData(
@@ -56,15 +56,15 @@ namespace AirBNBAPI.Data
             modelBuilder.Entity<Location>().HasData(
                 new { Id = 1, Rooms = 3, Description = "Mooi huis gelegen in het centrum", Feature = AirBnb.Model.Location.Features.Smoking, SubTitle = "Huis word al jaren goed bevonden door 100+ klanten", NumberOfGuests = 3, Title = "BeeldhouwerKasteel", Type = AirBnb.Model.Location.LocationType.Appartment, PricePerDay = 50.99F, LandlordId = 1, ImageId = 3 },
                 new { Id = 2, Rooms = 4, Description = "Prachtig kasteel van Nederland", Feature = AirBnb.Model.Location.Features.Smoking, SubTitle = "Prijzig, maar een echte ervaring.", NumberOfGuests = 20, Title = "Kasteel", Type = AirBnb.Model.Location.LocationType.House, PricePerDay = 500.99F, LandlordId = 2, ImageId = 4 }
-            );
+                );
 
 
             modelBuilder.Entity<Image>().HasData(
-           new { Id = 1, IsCover = false, Url = "https://thumbs.dreamstime.com/b/outdoor-portrait-year-old-man-wearing-brown-pullover-eyeglasses-outdoor-portrait-year-old-man-146976531.jpg", LocationId = 1 },
+           new { Id = 1, IsCover = false, Url = "https://dq1eylutsoz4u.cloudfront.net/2019/12/20060024/adult-man-baby-boomer-clean-cut_t20_b8wV6V-800x600-50-year-old-man.jpg", LocationId = 1 },
            new { Id = 2, IsCover = false, Url = "https://as1.ftcdn.net/v2/jpg/04/70/50/70/1000_F_470507000_FxGToXZnkwPgMYAc5KdX9SvtlYLjPhKf.jpg", LocationId = 2 },
-           new { Id = 3, IsCover = true, Url = "https://media.istockphoto.com/id/1165384568/nl/foto/europa-modern-complex-van-residenti%C3%ABle-gebouwen.jpg?s=612x612&w=is&k=20&c=KayrzIyyBnvebnLbpUlW9xJTHfqSMt8k-pOId4BMWO8=", LocationId = 1 },
-           new { Id = 4, IsCover = true, Url = "https://kastelenmagazine.nl/wp-content/uploads/2021/03/Kasteel-Helmond-e1646478334654-1120x705.jpg", LocationId = 2 }
-         );
+           new { Id = 3, IsCover = true, Url = "https://www.chr-apartments.com/sites/default/files/styles/tile_image_cropped/public/video_thumbnails/Rwiy-8x8o5w.jpg?itok=X0MqiZeY", LocationId = 1 },
+           new { Id = 4, IsCover = true, Url = "https://www.mapofjoy.nl/wp-content/uploads/2022/11/kasteel-de-haar-mapofjoy.jpg", LocationId = 2 }
+                 );
 
 
 
