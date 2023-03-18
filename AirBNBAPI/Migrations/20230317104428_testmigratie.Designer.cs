@@ -4,6 +4,7 @@ using AirBNBAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirBNBAPI.Migrations
 {
     [DbContext(typeof(AirBNBAPIContext))]
-    partial class AirBNBAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20230317104428_testmigratie")]
+    partial class testmigratie
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,22 +47,6 @@ namespace AirBNBAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customer");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "Bilal.youssry@gmail.com",
-                            FirstName = "Bilal",
-                            LastName = "Yousef"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "maxmetz8@gmail.com",
-                            FirstName = "Max",
-                            LastName = "Metz"
-                        });
                 });
 
             modelBuilder.Entity("AirBnb.Model.Image", b =>
@@ -86,36 +72,6 @@ namespace AirBNBAPI.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Image");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsCover = false,
-                            LocationId = 1,
-                            Url = "https://thumbs.dreamstime.com/b/outdoor-portrait-year-old-man-wearing-brown-pullover-eyeglasses-outdoor-portrait-year-old-man-146976531.jpg"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsCover = false,
-                            LocationId = 2,
-                            Url = "https://as1.ftcdn.net/v2/jpg/04/70/50/70/1000_F_470507000_FxGToXZnkwPgMYAc5KdX9SvtlYLjPhKf.jpg"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsCover = true,
-                            LocationId = 1,
-                            Url = "https://media.istockphoto.com/id/1165384568/nl/foto/europa-modern-complex-van-residenti%C3%ABle-gebouwen.jpg?s=612x612&w=is&k=20&c=KayrzIyyBnvebnLbpUlW9xJTHfqSMt8k-pOId4BMWO8="
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsCover = true,
-                            LocationId = 2,
-                            Url = "https://kastelenmagazine.nl/wp-content/uploads/2021/03/Kasteel-Helmond-e1646478334654-1120x705.jpg"
-                        });
                 });
 
             modelBuilder.Entity("AirBnb.Model.Landlord", b =>
@@ -147,24 +103,6 @@ namespace AirBNBAPI.Migrations
                         .HasFilter("[AvatarId] IS NOT NULL");
 
                     b.ToTable("Landlord");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Age = 55,
-                            AvatarId = 1,
-                            FirstName = "Herman ",
-                            LastName = "Mol"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Age = 61,
-                            AvatarId = 2,
-                            FirstName = "Jaap",
-                            LastName = "Keizer"
-                        });
                 });
 
             modelBuilder.Entity("AirBnb.Model.Location", b =>
@@ -210,34 +148,6 @@ namespace AirBNBAPI.Migrations
                     b.HasIndex("LandlordId");
 
                     b.ToTable("Location");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Mooi huis gelegen in het centrum",
-                            Feature = 1,
-                            LandlordId = 1,
-                            NumberOfGuests = 3,
-                            PricePerDay = 50.99f,
-                            Rooms = 3,
-                            SubTitle = "Huis word al jaren goed bevonden door 100+ klanten",
-                            Title = "BeeldhouwerKasteel",
-                            Type = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Prachtig kasteel van Nederland",
-                            Feature = 1,
-                            LandlordId = 2,
-                            NumberOfGuests = 20,
-                            PricePerDay = 500.99f,
-                            Rooms = 4,
-                            SubTitle = "Prijzig, maar een echte ervaring.",
-                            Title = "Kasteel",
-                            Type = 5
-                        });
                 });
 
             modelBuilder.Entity("AirBnb.Model.Reservation", b =>

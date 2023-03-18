@@ -13,10 +13,12 @@ namespace AirBnb.Model
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
-        public Image? Avatar { get; set; }
+        public virtual Image? Avatar { get; set; }
+
+        // Deze mag blijven
         public int? AvatarId { get; set; }
 
-        public List<Location> Locations { get; set; }
+        public virtual List<Location> Locations { get; set; }
 
         public Landlord()
         {

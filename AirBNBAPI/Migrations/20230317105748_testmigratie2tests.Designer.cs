@@ -4,6 +4,7 @@ using AirBNBAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirBNBAPI.Migrations
 {
     [DbContext(typeof(AirBNBAPIContext))]
-    partial class AirBNBAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20230317105748_testmigratie2tests")]
+    partial class testmigratie2tests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,7 +155,6 @@ namespace AirBNBAPI.Migrations
                         {
                             Id = 1,
                             Age = 55,
-                            AvatarId = 1,
                             FirstName = "Herman ",
                             LastName = "Mol"
                         },
@@ -161,7 +162,6 @@ namespace AirBNBAPI.Migrations
                         {
                             Id = 2,
                             Age = 61,
-                            AvatarId = 2,
                             FirstName = "Jaap",
                             LastName = "Keizer"
                         });
