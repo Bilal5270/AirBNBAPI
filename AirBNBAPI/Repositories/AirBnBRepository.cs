@@ -1,5 +1,6 @@
 ﻿using AirBnb.Model;
 using AirBNBAPI.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace AirBNBAPI.Repositories
 {
@@ -23,7 +24,7 @@ namespace AirBNBAPI.Repositories
 
         public IEnumerable<Location> GetAllLocations()
         {
-            return _context.Location.ToList();
+            return _context.Location.Include(location => location.Images).Include(location => location.Landlord).ToList();
         }
 
         public IEnumerable<Customer> GetAllCustomers()
