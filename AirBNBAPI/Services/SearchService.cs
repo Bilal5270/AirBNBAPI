@@ -3,7 +3,7 @@ using AirBNBAPI.Repositories;
 
 namespace AirBNBAPI.Services
 {
-    public class SearchService
+    public class SearchService : ISearchService
     {
         private readonly IAirBnBRepository _airBnBRepository;
         public SearchService (IAirBnBRepository airBnBRepository)

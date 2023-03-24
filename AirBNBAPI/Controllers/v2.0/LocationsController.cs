@@ -20,20 +20,20 @@ namespace AirBNBAPI.Controllers.v2._0
     {
         private readonly AirBNBAPIContext _context;
         private readonly IMapper _mapper;
-        private readonly ILocationService _locationService;
+        private readonly ISearchService _searchService;
 
-        public LocationsController(AirBNBAPIContext context, IMapper mapper, ILocationService locationService)
+        public LocationsController(AirBNBAPIContext context, IMapper mapper, ISearchService searchService)
         {
             _context = context;
             _mapper = mapper;
-            _locationService = locationService;
+            _searchService = searchService;
         }
 
         // GET: api/Locations
         [HttpGet]
         public IEnumerable<PricedLocationDto> GetLocation()
         {
-            return _locationService.GetAllLocations().Select(location => _mapper.Map<PricedLocationDto>(location));
+            return _searchService.GetAllLocations().Select(location => _mapper.Map<PricedLocationDto>(location));
             //return _studentService.GetAllStudents().Select(student => _mapper.Map(student));
         }
 
