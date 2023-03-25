@@ -78,9 +78,7 @@ namespace AirBNBAPI.Controllers
             var list = await _searchService.GetAllLocationsAsync(cancellationToken);
             var filtered = list.Where(item => item.Feature == obj.Feature).Where(item => item.PricePerDay >= obj.MinPrice).Where(item => item.PricePerDay <= obj.MaxPrice).Where(item => item.Type == obj.Type);
             return  filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
-            //var search = _context.Add(_mapper.Map<Location>(obj));
-            ////_context.SaveChanges();
-            //return CreatedAtAction("GetAuthorandBooks", new { type = obj.Type,feature = obj.Feature, minPrice = obj.MinPrice, maxPrice = obj.MaxPrice, room = obj.Room  }, obj);
+            
         }
         // GET: api/Locations
 

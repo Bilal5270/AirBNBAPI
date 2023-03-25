@@ -45,6 +45,15 @@ namespace AirBNBAPI.Controllers.v2._0
             
         }
 
+        [HttpPost("Search")]
+        public async Task<IEnumerable<PricedLocationDto>> Search(SearchDto obj, CancellationToken cancellationToken)
+        {
+            var list = await _searchService.GetAllLocationsAsync(cancellationToken);
+            var filtered = list.Where(item => item.Feature == obj.Feature).Where(item => item.PricePerDay >= obj.MinPrice).Where(item => item.PricePerDay <= obj.MaxPrice).Where(item => item.Type == obj.Type);
+            return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+
+        }
+
         //// GET: api/Locations/5
         //[HttpGet("{id}")]
         //public async Task<ActionResult<Location>> GetLocation(int id)
