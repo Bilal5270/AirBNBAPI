@@ -10,6 +10,7 @@ using AirBnb.Model;
 using AirBNBAPI.Model.DTO;
 using AutoMapper;
 using AirBNBAPI.Services;
+using System.Threading;
 
 namespace AirBNBAPI.Controllers
 {
@@ -64,13 +65,25 @@ namespace AirBNBAPI.Controllers
 
         // GET: api/Properties/5
         [HttpGet("GetDetails/{id}")]
-        public async Task<ActionResult<Location>> GetLocation(int id, CancellationToken cancellationToken)
+        public async Task<ActionResult<Location>> GetLocation(int id)
         {
 
             return await _searchService.GetSpecificLocationAsync(id);
+
+        }
+
+        [HttpPost("Search")]
+        public async Task <IEnumerable<PricedLocationDto>>Search(SearchDto obj,CancellationToken cancellationToken)
+        {
+            var list = await _searchService.GetAllLocationsAsync(cancellationToken);
+            var filtered = list.Where(item => item.Feature == obj.Feature).Where(item => item.PricePerDay >= obj.MinPrice).Where(item => item.PricePerDay <= obj.MaxPrice).Where(item => item.Type == obj.Type);
+            return  filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+            //var search = _context.Add(_mapper.Map<Location>(obj));
+            ////_context.SaveChanges();
+            //return CreatedAtAction("GetAuthorandBooks", new { type = obj.Type,feature = obj.Feature, minPrice = obj.MinPrice, maxPrice = obj.MaxPrice, room = obj.Room  }, obj);
         }
         // GET: api/Locations
-       
+
         //// PUT: api/Properties/5
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[HttpPut("{id}")]
@@ -102,16 +115,7 @@ namespace AirBNBAPI.Controllers
         //    return NoContent();
         //}
 
-        //// POST: api/Properties
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Location>> PostLocation(Location location)
-        //{
-        //    _context.Location.Add(location);
-        //    await _context.SaveChangesAsync();
 
-        //    return CreatedAtAction("GetLocation", new { id = location.Id }, location);
-        //}
 
         //// DELETE: api/Properties/5
         //[HttpDelete("{id}")]

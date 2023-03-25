@@ -94,15 +94,15 @@ namespace AirBNBAPI.Controllers.v2._0
         //    return NoContent();
         //}
 
-        //// POST: api/Locations
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/Locations
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[HttpPost]
         //public async Task<ActionResult<Location>> PostLocation(Location location)
         //{
-        //  if (_context.Location == null)
-        //  {
-        //      return Problem("Entity set 'AirBNBAPIContext.Location'  is null.");
-        //  }
+        //    if (_context.Location == null)
+        //    {
+        //        return Problem("Entity set 'AirBNBAPIContext.Location'  is null.");
+        //    }
         //    _context.Location.Add(location);
         //    await _context.SaveChangesAsync();
 

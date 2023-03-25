@@ -27,6 +27,8 @@ namespace Services
                 .ForMember(d => d.Price, opt => opt.MapFrom(s => s.PricePerDay));
             CreateMap<Location, MaxPriceDto>()
               .ForMember(d => d.Price, opt => opt.MapFrom(s => s.PricePerDay));
+            CreateMap<Location, DetailedDto>();
+            CreateMap<SearchDto, Location>();
         }
     }
 }

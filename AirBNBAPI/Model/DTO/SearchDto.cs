@@ -1,4 +1,5 @@
 ﻿using AirBnb.Model;
+using static AirBnb.Model.Location;
 
 namespace AirBNBAPI.Model.DTO
 {
@@ -13,24 +14,6 @@ namespace AirBNBAPI.Model.DTO
        public int? MinPrice { get; set; }
        public int? MaxPrice { get; set; }
 
-        public enum Features
-        {
-            Smoking = 1,
-            PetsAllowed = 2,
-            Wifi = 4,
-            TV = 8,
-            Bath = 16,
-            Breakfast = 32
-        }
 
-        public enum LocationType
-        {
-            Appartment,
-            Cottage,
-            Chalet,
-            Room,
-            Hotel,
-            House
-        }
     }
 }
