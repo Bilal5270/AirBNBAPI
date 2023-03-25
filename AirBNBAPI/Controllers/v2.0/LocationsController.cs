@@ -34,7 +34,7 @@ namespace AirBNBAPI.Controllers.v2._0
         public async Task <IEnumerable<PricedLocationDto>> GetLocation(CancellationToken cancellationToken)
         {
             return (await _searchService.GetAllLocationsAsync(cancellationToken)).Select(location => _mapper.Map<PricedLocationDto>(location));
-            //return _studentService.GetAllStudents().Select(student => _mapper.Map(student));
+            
         }
 
         [HttpGet("GetMaxPrice")]
@@ -42,7 +42,7 @@ namespace AirBNBAPI.Controllers.v2._0
         {
             IEnumerable<MaxPriceDto> list = (await _searchService.GetAllLocationsAsync(cancellationToken)).Select(location => _mapper.Map<MaxPriceDto>(location));
             return list.OrderByDescending(item => item.Price).First();
-            //return _studentService.GetAllStudents().Select(student => _mapper.Map(student));
+            
         }
 
         //// GET: api/Locations/5
