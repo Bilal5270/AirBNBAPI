@@ -16,15 +16,15 @@ namespace AirBNBAPI.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Location> GetAllLocations()
+        public async Task<IEnumerable<Location>> GetAllLocationsAsync(CancellationToken cancellationToken)
         {
-            return _airBnBRepository.GetAllLocations();
+            return await _airBnBRepository.GetAllLocationsAsync(cancellationToken);
 
         }
 
-        public Location GetSpecificLocation(int id)
+        public async Task<Location> GetSpecificLocationAsync(int id)
         {
-            return _airBnBRepository.GetLocation(id);
+            return await _airBnBRepository.GetLocationAsync(id);
         }
         //RESERVATIONS
 

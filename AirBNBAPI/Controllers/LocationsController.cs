@@ -34,18 +34,25 @@ namespace AirBNBAPI.Controllers
 
         // GET: api/Locations
         [HttpGet("GetAll")]
-        public IEnumerable<Location> GetAllLocation()
+        public async Task <IEnumerable<Location>> GetAllLocation(CancellationToken cancellationToken)
         {
-            return _searchService.GetAllLocations();
+            return await _searchService.GetAllLocationsAsync(cancellationToken);
         }
         /// <summary>
         /// Pulling all locations for advanced search
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<LocationDto> GetLocation()
+        public async Task <IEnumerable<LocationDto>> GetLocation(CancellationToken cancellationToken)
         {
-            return _searchService.GetAllLocations().Select(location => _mapper.Map<LocationDto>(location));
+            return (await _searchService.GetAllLocationsAsync(cancellationToken)).Select(location => _mapper.Map<LocationDto>(location));
+            //return _studentService.GetAllStudents().Select(student => _mapper.Map(student));
+        }
+        [HttpGet("GetMaxPrice")]
+        public async Task<ActionResult<MaxPriceDto>> GetMaxPrice(CancellationToken cancellationToken)
+        {
+            IEnumerable<MaxPriceDto> list = (await _searchService.GetAllLocationsAsync(cancellationToken)).Select(location => _mapper.Map<MaxPriceDto>(location));
+            return list.OrderByDescending(item => item.Price).First();
             //return _studentService.GetAllStudents().Select(student => _mapper.Map(student));
         }
 
@@ -56,13 +63,14 @@ namespace AirBNBAPI.Controllers
         //}
 
         // GET: api/Properties/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Location>> GetLocation(int id)
+        [HttpGet("GetDetails/{id}")]
+        public async Task<ActionResult<Location>> GetLocation(int id, CancellationToken cancellationToken)
         {
 
-            return _searchService.GetSpecificLocation(id);
+            return await _searchService.GetSpecificLocationAsync(id);
         }
-
+        // GET: api/Locations
+       
         //// PUT: api/Properties/5
         //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[HttpPut("{id}")]

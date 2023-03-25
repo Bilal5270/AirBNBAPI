@@ -4,8 +4,8 @@ namespace AirBNBAPI.Services
 {
     public interface ISearchService
     {
-        public IEnumerable<Location> GetAllLocations();
-        public Location GetSpecificLocation(int id);
+        public  Task <IEnumerable<Location>> GetAllLocationsAsync(CancellationToken cancellationToken);
+        public Task <Location> GetSpecificLocationAsync(int id);
 
         public Location ChangeLocation(int id, Location location);
         public IEnumerable<Reservation> GetAllReservations();

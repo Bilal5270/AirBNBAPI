@@ -25,6 +25,8 @@ namespace Services
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
                 .ForMember(d => d.Type, opt => opt.MapFrom(s => s.Type))
                 .ForMember(d => d.Price, opt => opt.MapFrom(s => s.PricePerDay));
+            CreateMap<Location, MaxPriceDto>()
+              .ForMember(d => d.Price, opt => opt.MapFrom(s => s.PricePerDay));
         }
     }
 }
