@@ -65,19 +65,29 @@ namespace AirBNBAPI.Controllers
 
         // GET: api/Properties/5
         [HttpGet("GetDetails/{id}")]
-        public async Task<ActionResult<Location>> GetLocation(int id)
+        public async Task<ActionResult<DetailedDto>> GetLocation(int id)
         {
 
-            return await _searchService.GetSpecificLocationAsync(id);
+            var specificLocation = await _searchService.GetSpecificLocationAsync(id);
+            var detailedLocation = _mapper.Map<DetailedDto>(specificLocation);
+            return detailedLocation;
 
         }
 
         [HttpPost("Search")]
-        public async Task <IEnumerable<PricedLocationDto>>Search(SearchDto obj,CancellationToken cancellationToken)
+        public async Task <IEnumerable<PricedLocationDto>>Search(SearchDto? obj,CancellationToken cancellationToken)
         {
             var list = await _searchService.GetAllLocationsAsync(cancellationToken);
-            var filtered = list.Where(item => item.Feature == obj.Feature).Where(item => item.PricePerDay >= obj.MinPrice).Where(item => item.PricePerDay <= obj.MaxPrice).Where(item => item.Type == obj.Type).Where(item => item.Rooms >= obj.Room);
-            return  filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+            if (obj == null)
+            {
+                return list.Select(location => _mapper.Map<PricedLocationDto>(location)); 
+            }
+            else
+            {
+               var filtered = list.Where(item => item.Feature == obj.Feature).Where(item => item.PricePerDay >= obj.MinPrice).Where(item => item.PricePerDay <= obj.MaxPrice).Where(item => item.Type == obj.Type).Where(item => item.Rooms >= obj.Room);
+                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+            }
+           
             
         }
         // GET: api/Locations

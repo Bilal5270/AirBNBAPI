@@ -1,4 +1,5 @@
 ﻿using AirBnb.Model;
+using static AirBnb.Model.Location;
 
 namespace AirBNBAPI.Model.DTO
 {
@@ -15,42 +16,17 @@ namespace AirBNBAPI.Model.DTO
 
         public LocationType Type { get; set; }
         public Features Feature { get; set; }
-        public virtual List<Image> Images { get; set; }
-        public virtual Landlord Landlord { get; set; }
+        public virtual List<ImageDto> Images { get; set; }
+        public virtual LandlordDto Landlord { get; set; }
 
         public DetailedDto()
         {
-            Images = new List<Image>();
+            Images = new List<ImageDto>();
 
         }
 
 
-        public enum Features
-        {
-            Smoking = 1,
-            PetsAllowed = 2,
-            Wifi = 4,
-            TV = 8,
-            Bath = 16,
-            Breakfast = 32
-        }
-
-        public enum LocationType
-        {
-            Appartment,
-            Cottage,
-            Chalet,
-            Room,
-            Hotel,
-            House
-        }
-
-
-        //public LocationDto()
-        //{
-        //    LandlordAvatarURL = location.Landlord.Avatar.Url;
-        //    ImageUrl = location.Images.FirstOrDefault().Url;
-        //}
+   
 
 
     }
