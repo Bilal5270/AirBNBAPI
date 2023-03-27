@@ -75,7 +75,7 @@ namespace AirBNBAPI.Controllers
         }
 
         [HttpPost("Search")]
-        public async Task <IEnumerable<PricedLocationDto>>Search(SearchDto? obj,CancellationToken cancellationToken)
+        public async Task<IEnumerable<PricedLocationDto>> Search(SearchDto? obj, CancellationToken cancellationToken)
         {
             var list = await _searchService.GetAllLocationsAsync(cancellationToken);
             if (obj == null)
