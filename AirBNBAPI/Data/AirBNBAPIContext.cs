@@ -54,8 +54,8 @@ namespace AirBNBAPI.Data
 
 
             modelBuilder.Entity<Location>().HasData(
-                new { Id = 1, Rooms = 3, Description = "Mooi huis gelegen in het centrum", Feature = AirBnb.Model.Location.Features.Smoking, SubTitle = "Huis word al jaren goed bevonden door 100+ klanten", NumberOfGuests = 3, Title = "BeeldhouwerKasteel", Type = AirBnb.Model.Location.LocationType.Appartment, PricePerDay = 50.99F, LandlordId = 1, ImageId = 3 },
-                new { Id = 2, Rooms = 4, Description = "Prachtig kasteel van Nederland", Feature = AirBnb.Model.Location.Features.Smoking, SubTitle = "Prijzig, maar een echte ervaring.", NumberOfGuests = 20, Title = "Kasteel", Type = AirBnb.Model.Location.LocationType.House, PricePerDay = 500.99F, LandlordId = 2, ImageId = 4 }
+                new { Id = 1, Rooms = 3, Description = "Mooi huis gelegen in het centrum", Features = AirBnb.Model.Location.LocationFeatures.Smoking, SubTitle = "Huis word al jaren goed bevonden door 100+ klanten", NumberOfGuests = 3, Title = "BeeldhouwerKasteel", Type = AirBnb.Model.Location.LocationType.Appartment, PricePerDay = 50.99F, LandlordId = 1, ImageId = 3 },
+                new { Id = 2, Rooms = 4, Description = "Prachtig kasteel van Nederland", Features = AirBnb.Model.Location.LocationFeatures.Smoking, SubTitle = "Prijzig, maar een echte ervaring.", NumberOfGuests = 20, Title = "Kasteel", Type = AirBnb.Model.Location.LocationType.House, PricePerDay = 500.99F, LandlordId = 2, ImageId = 4 }
                 );
 
 
