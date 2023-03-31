@@ -46,11 +46,50 @@ namespace AirBNBAPI.Controllers.v2._0
         }
 
         [HttpPost("Search")]
-        public async Task<IEnumerable<PricedLocationDto>> Search(SearchDto obj, CancellationToken cancellationToken)
+        public async Task<IEnumerable<PricedLocationDto>> Search(SearchDto? obj, CancellationToken cancellationToken)
         {
+            int? MinPrice = obj.MinPrice;
+            int? MaxPrice = obj.MaxPrice;
+            int? Room = obj.Rooms;
+
+            if (obj.MinPrice == null)
+            {
+                MinPrice = 0;
+            }
+            if (obj.MaxPrice == null)
+            {
+                MaxPrice = int.MaxValue;
+            }
+            if (obj.Rooms == null)
+            {
+                Room = 0;
+            }
             var list = await _searchService.GetAllLocationsAsync(cancellationToken);
-            var filtered = list.Where(item => item.Features == obj.Features).Where(item => item.PricePerDay >= obj.MinPrice).Where(item => item.PricePerDay <= obj.MaxPrice).Where(item => item.Type == obj.Type).Where(item => item.Rooms >= obj.Rooms);
-            return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+            if (obj.Features == null && obj.Type == null && obj.MaxPrice == null && obj.MinPrice == null && obj.Rooms == null)
+            {
+                return list.Select(location => _mapper.Map<PricedLocationDto>(location));
+            }
+            if (obj.Features == null && obj.Type == null)
+            {
+                var filtered = list.Where(item => item.PricePerDay >= MinPrice).Where(item => item.PricePerDay <= MaxPrice).Where(item => item.Rooms >= Room);
+                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+            }
+            if (obj.Features == null)
+            {
+                var filtered = list.Where(item => item.Type == obj.Type).Where(item => item.PricePerDay >= MinPrice).Where(item => item.PricePerDay <= MaxPrice).Where(item => item.Rooms >= Room);
+                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+            }
+            if (obj.Type == null)
+            {
+                var filtered = list.Where(item => item.Features == obj.Features).Where(item => item.PricePerDay >= MinPrice).Where(item => item.PricePerDay <= MaxPrice).Where(item => item.Rooms >= Room);
+                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+            }
+            else
+            {
+                var filtered = list.Where(item => item.Features == obj.Features).Where(item => item.PricePerDay >= MinPrice).Where(item => item.PricePerDay <= MaxPrice).Where(item => item.Type == obj.Type).Where(item => item.Rooms >= Room);
+                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+            }
+
 
         }
 
