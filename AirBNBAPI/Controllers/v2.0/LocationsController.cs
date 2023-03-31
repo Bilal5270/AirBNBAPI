@@ -55,10 +55,10 @@ namespace AirBNBAPI.Controllers.v2._0
         }
 
         [HttpGet("GetDetails/{id}")]
-        public async Task<ActionResult<DetailedDto>> GetLocation(int id)
+        public async Task<ActionResult<DetailedDto>> GetLocation(int id, CancellationToken cancellationToken)
         {
 
-            var specificLocation = await _searchService.GetSpecificLocationAsync(id);
+            var specificLocation = await _searchService.GetSpecificLocationAsync(id, cancellationToken);
             var detailedLocation = _mapper.Map<DetailedDto>(specificLocation);
             return detailedLocation;
 

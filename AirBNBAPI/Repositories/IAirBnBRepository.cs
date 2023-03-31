@@ -17,7 +17,7 @@ namespace AirBNBAPI.Repositories
 
         public Landlord GetLandlord(int id);
 
-        public Task<Location> GetLocationAsync(int id);
+        public Task<Location> GetLocationAsync(int id, CancellationToken cancellationToken);
 
 
 

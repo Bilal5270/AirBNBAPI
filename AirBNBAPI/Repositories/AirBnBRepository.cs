@@ -42,9 +42,9 @@ namespace AirBNBAPI.Repositories
             return _context.Reservation.Find(id);
         }
 
-        public async Task<Location> GetLocationAsync(int id)
+        public async Task<Location> GetLocationAsync(int id, CancellationToken cancellationToken)
         {
-            return await _context.Location.FindAsync(id);
+            return await _context.Location.FindAsync(new object[] { id }, cancellationToken);
         }
         //public async Task<Location> GetMaxPrice()
         //{

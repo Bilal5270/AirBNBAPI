@@ -22,9 +22,9 @@ namespace AirBNBAPI.Services
 
         }
 
-        public async Task<Location> GetSpecificLocationAsync(int id)
+        public async Task<Location> GetSpecificLocationAsync(int id, CancellationToken cancellationToken)
         {
-            return await _airBnBRepository.GetLocationAsync(id);
+            return await _airBnBRepository.GetLocationAsync(id, cancellationToken);
         }
         //RESERVATIONS
 
