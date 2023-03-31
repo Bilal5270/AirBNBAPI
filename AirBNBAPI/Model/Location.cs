@@ -24,7 +24,7 @@ namespace AirBnb.Model
         public int NumberOfGuests { get; set; }
      
         public LocationType Type { get; set; }
-        public Features Feature { get; set; }
+        public LocationFeatures Features { get; set; }
         public Location()
         {
             Images = new List<Image>();
@@ -33,7 +33,7 @@ namespace AirBnb.Model
         }
 
         [Flags]
-        public enum Features
+        public enum LocationFeatures
         {
             Smoking = 1,
             PetsAllowed = 2,
