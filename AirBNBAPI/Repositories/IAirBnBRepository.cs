@@ -9,15 +9,15 @@ namespace AirBNBAPI.Repositories
 
         public IEnumerable<Landlord> GetAllLandlords();
 
-        public IEnumerable<Location> GetAllLocations();
-
+        public Task<IEnumerable<Location>> GetAllLocationsAsync(CancellationToken cancellationToken);
+        public Task<List<Reservation>> GetReservationsByLocationAsync(int locationId, CancellationToken cancellationToken);
         public Customer GetCustomer(int id);
 
         public Reservation GetReservation(int id);
 
         public Landlord GetLandlord(int id);
 
-        public Location GetLocation(int id);
+        public Task<Location> GetLocationAsync(int id, CancellationToken cancellationToken);
 
 
 

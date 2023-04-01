@@ -20,21 +20,87 @@ namespace AirBNBAPI.Controllers.v2._0
     {
         private readonly AirBNBAPIContext _context;
         private readonly IMapper _mapper;
-        private readonly ILocationService _locationService;
+        private readonly ISearchService _searchService;
 
-        public LocationsController(AirBNBAPIContext context, IMapper mapper, ILocationService locationService)
+        public LocationsController(AirBNBAPIContext context, IMapper mapper, ISearchService searchService)
         {
             _context = context;
             _mapper = mapper;
-            _locationService = locationService;
+            _searchService = searchService;
         }
 
         // GET: api/Locations
         [HttpGet]
-        public IEnumerable<PricedLocationDto> GetLocation()
+        public async Task <IEnumerable<PricedLocationDto>> GetLocation(CancellationToken cancellationToken)
         {
-            return _locationService.GetAllLocations().Select(location => _mapper.Map<PricedLocationDto>(location));
-            //return _studentService.GetAllStudents().Select(student => _mapper.Map(student));
+            return (await _searchService.GetAllLocationsAsync(cancellationToken)).Select(location => _mapper.Map<PricedLocationDto>(location));
+            
+        }
+
+        [HttpGet("GetMaxPrice")]
+        public async Task<ActionResult<MaxPriceDto>> GetMaxPrice(CancellationToken cancellationToken)
+        {
+            IEnumerable<MaxPriceDto> list = (await _searchService.GetAllLocationsAsync(cancellationToken)).Select(location => _mapper.Map<MaxPriceDto>(location));
+            return list.OrderByDescending(item => item.Price).First();
+            
+        }
+
+        [HttpPost("Search")]
+        public async Task<IEnumerable<PricedLocationDto>> Search(SearchDto? obj, CancellationToken cancellationToken)
+        {
+            int? MinPrice = obj.MinPrice;
+            int? MaxPrice = obj.MaxPrice;
+            int? Room = obj.Rooms;
+
+            if (obj.MinPrice == null)
+            {
+                MinPrice = 0;
+            }
+            if (obj.MaxPrice == null)
+            {
+                MaxPrice = int.MaxValue;
+            }
+            if (obj.Rooms == null)
+            {
+                Room = 0;
+            }
+            var list = await _searchService.GetAllLocationsAsync(cancellationToken);
+            if (obj.Features == null && obj.Type == null && obj.MaxPrice == null && obj.MinPrice == null && obj.Rooms == null)
+            {
+                return list.Select(location => _mapper.Map<PricedLocationDto>(location));
+            }
+            if (obj.Features == null && obj.Type == null)
+            {
+                var filtered = list.Where(item => item.PricePerDay >= MinPrice).Where(item => item.PricePerDay <= MaxPrice).Where(item => item.Rooms >= Room);
+                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+            }
+            if (obj.Features == null)
+            {
+                var filtered = list.Where(item => item.Type == obj.Type).Where(item => item.PricePerDay >= MinPrice).Where(item => item.PricePerDay <= MaxPrice).Where(item => item.Rooms >= Room);
+                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+            }
+            if (obj.Type == null)
+            {
+                var filtered = list.Where(item => item.Features == obj.Features).Where(item => item.PricePerDay >= MinPrice).Where(item => item.PricePerDay <= MaxPrice).Where(item => item.Rooms >= Room);
+                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+            }
+            else
+            {
+                var filtered = list.Where(item => item.Features == obj.Features).Where(item => item.PricePerDay >= MinPrice).Where(item => item.PricePerDay <= MaxPrice).Where(item => item.Type == obj.Type).Where(item => item.Rooms >= Room);
+                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
+            }
+
+
+        }
+
+        [HttpGet("GetDetails/{id}")]
+        public async Task<ActionResult<DetailedDto>> GetLocation(int id, CancellationToken cancellationToken)
+        {
+
+            var specificLocation = await _searchService.GetSpecificLocationAsync(id, cancellationToken);
+            var detailedLocation = _mapper.Map<DetailedDto>(specificLocation);
+            return detailedLocation;
+
         }
 
         //// GET: api/Locations/5
@@ -86,15 +152,15 @@ namespace AirBNBAPI.Controllers.v2._0
         //    return NoContent();
         //}
 
-        //// POST: api/Locations
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/Locations
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[HttpPost]
         //public async Task<ActionResult<Location>> PostLocation(Location location)
         //{
-        //  if (_context.Location == null)
-        //  {
-        //      return Problem("Entity set 'AirBNBAPIContext.Location'  is null.");
-        //  }
+        //    if (_context.Location == null)
+        //    {
+        //        return Problem("Entity set 'AirBNBAPIContext.Location'  is null.");
+        //    }
         //    _context.Location.Add(location);
         //    await _context.SaveChangesAsync();
 

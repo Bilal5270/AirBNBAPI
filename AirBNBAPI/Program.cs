@@ -20,10 +20,7 @@ builder.Services.AddDbContext<AirBNBAPIContext>(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<ICustomerService, CustomerDatabaseService>();
-builder.Services.AddScoped<ILandlordService, LandlordDatabaseService>();
-builder.Services.AddScoped<IReservationService, ReservationDatabaseService>();
-builder.Services.AddScoped<ILocationService, LocationDatabaseService>();
+builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<IAirBnBRepository, AirBnBRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers().AddJsonOptions(options =>

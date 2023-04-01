@@ -21,88 +21,88 @@ namespace AirBNBAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Landlords
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Landlord>>> GetLandlord()
-        {
-            return await _context.Landlord.ToListAsync();
-        }
+        //// GET: api/Landlords
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Landlord>>> GetLandlord()
+        //{
+        //    return await _context.Landlord.ToListAsync();
+        //}
 
-        // GET: api/Landlords/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Landlord>> GetLandlord(int id)
-        {
-            var landlord = await _context.Landlord.FindAsync(id);
+        //// GET: api/Landlords/5
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Landlord>> GetLandlord(int id)
+        //{
+        //    var landlord = await _context.Landlord.FindAsync(id);
 
-            if (landlord == null)
-            {
-                return NotFound();
-            }
+        //    if (landlord == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return landlord;
-        }
+        //    return landlord;
+        //}
 
-        // PUT: api/Landlords/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLandlord(int id, Landlord landlord)
-        {
-            if (id != landlord.Id)
-            {
-                return BadRequest();
-            }
+        //// PUT: api/Landlords/5
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutLandlord(int id, Landlord landlord)
+        //{
+        //    if (id != landlord.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(landlord).State = EntityState.Modified;
+        //    _context.Entry(landlord).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LandlordExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!LandlordExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        // POST: api/Landlords
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Landlord>> PostLandlord(Landlord landlord)
-        {
-            _context.Landlord.Add(landlord);
-            await _context.SaveChangesAsync();
+        //// POST: api/Landlords
+        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<ActionResult<Landlord>> PostLandlord(Landlord landlord)
+        //{
+        //    _context.Landlord.Add(landlord);
+        //    await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLandlord", new { id = landlord.Id }, landlord);
-        }
+        //    return CreatedAtAction("GetLandlord", new { id = landlord.Id }, landlord);
+        //}
 
-        // DELETE: api/Landlords/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLandlord(int id)
-        {
-            var landlord = await _context.Landlord.FindAsync(id);
-            if (landlord == null)
-            {
-                return NotFound();
-            }
+        //// DELETE: api/Landlords/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteLandlord(int id)
+        //{
+        //    var landlord = await _context.Landlord.FindAsync(id);
+        //    if (landlord == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Landlord.Remove(landlord);
-            await _context.SaveChangesAsync();
+        //    _context.Landlord.Remove(landlord);
+        //    await _context.SaveChangesAsync();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        private bool LandlordExists(int id)
-        {
-            return _context.Landlord.Any(e => e.Id == id);
-        }
+        //private bool LandlordExists(int id)
+        //{
+        //    return _context.Landlord.Any(e => e.Id == id);
+        //}
     }
 }

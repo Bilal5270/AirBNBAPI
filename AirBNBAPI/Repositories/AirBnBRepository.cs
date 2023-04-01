@@ -1,5 +1,6 @@
 ﻿using AirBnb.Model;
 using AirBNBAPI.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace AirBNBAPI.Repositories
 {
@@ -21,9 +22,9 @@ namespace AirBNBAPI.Repositories
             return _context.Reservation.ToList();
         }
 
-        public IEnumerable<Location> GetAllLocations()
+        public async Task <IEnumerable<Location>> GetAllLocationsAsync(CancellationToken cancellationToken)
         {
-            return _context.Location.ToList();
+            return await _context.Location.Include(location => location.Images).Include(location => location.Landlord).ToListAsync(cancellationToken);
         }
 
         public IEnumerable<Customer> GetAllCustomers()
@@ -41,11 +42,24 @@ namespace AirBNBAPI.Repositories
             return _context.Reservation.Find(id);
         }
 
-        public Location GetLocation(int id)
+        public async Task<Location> GetLocationAsync(int id, CancellationToken cancellationToken)
         {
-            return _context.Location.Find(id);
+            return await _context.Location.FindAsync(new object[] { id }, cancellationToken);
         }
+        //public async Task<Location> GetMaxPrice()
+        //{
+        //    return await _context.Location.Where(p => p.PricePerDay == Max);
+        //}
+        public async Task<List<Reservation>> GetReservationsByLocationAsync(int locationId, CancellationToken cancellationToken)
+        {
+            var reservations = await _context.Reservation
+                .Include(r => r.Location)
+                .Include(r => r.Customer)
+                .Where(r => r.LocationId == locationId)
+                .ToListAsync(cancellationToken);
 
+            return reservations;
+        }
         public Customer GetCustomer(int id)
         {
             return _context.Customer.Find(id);
