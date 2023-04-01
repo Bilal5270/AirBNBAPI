@@ -6,7 +6,7 @@ namespace AirBNBAPI.Services
     {
         public  Task <IEnumerable<Location>> GetAllLocationsAsync(CancellationToken cancellationToken);
         public Task <Location> GetSpecificLocationAsync(int id, CancellationToken cancellationToken);
-
+        public Task<List<Reservation>> GetReservationsByLocationAsync(int locationId, CancellationToken cancellationToken);
         public Location ChangeLocation(int id, Location location);
         public IEnumerable<Reservation> GetAllReservations();
         public Reservation GetSpecificReservation(int id);

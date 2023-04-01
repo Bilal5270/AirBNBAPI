@@ -121,6 +121,19 @@ namespace AirBNBAPI.Controllers
 
 
         }
+
+        [HttpGet("UnAvailableDates/{locationId}")]
+        public async Task<ActionResult<UnavailableDatesDto>> GetUnavailableDates(int locationId, CancellationToken cancellationToken)
+        {
+            var reservations = await _searchService.GetReservationsByLocationAsync(locationId,cancellationToken);
+            var unavailableDates = reservations.SelectMany(r =>
+                Enumerable.Range(0, (r.EndDate - r.StartDate).Days + 1)
+                    .Select(i => r.StartDate.AddDays(i))
+            ).ToList();
+            var dto = new UnavailableDatesDto { UnavailableDates = unavailableDates };
+            return Ok(dto);
+        }
+
         // GET: api/Locations
 
         //// PUT: api/Properties/5

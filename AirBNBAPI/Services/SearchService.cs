@@ -1,5 +1,6 @@
 ﻿using AirBnb.Model;
 using AirBNBAPI.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace AirBNBAPI.Services
 {
@@ -26,9 +27,13 @@ namespace AirBNBAPI.Services
         {
             return await _airBnBRepository.GetLocationAsync(id, cancellationToken);
         }
+
         //RESERVATIONS
 
-
+        public async Task<List<Reservation>> GetReservationsByLocationAsync(int locationId, CancellationToken cancellationToken)
+        {
+            return await _airBnBRepository.GetReservationsByLocationAsync(locationId, cancellationToken);
+        }
         public Reservation ChangeReservation(int id, Reservation reservation)
         {
             throw new NotImplementedException();
