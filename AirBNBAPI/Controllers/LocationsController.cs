@@ -31,24 +31,56 @@ namespace AirBNBAPI.Controllers
             _context = context;
             _mapper = mapper;
             _searchService = searchService;
-        }
 
+        }
+        /// <summary>
+        /// Gets all locations.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/Locations/GetAll
+        ///
+        /// </remarks>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An <see cref="IEnumerable{Location}"/> of all locations.</returns>
+        /// 
         // GET: api/Locations
         [HttpGet("GetAll")]
         public async Task <IEnumerable<Location>> GetAllLocation(CancellationToken cancellationToken)
         {
             return await _searchService.GetAllLocationsAsync(cancellationToken);
         }
+
         /// <summary>
-        /// Pulling all locations for advanced search
+        /// Gets all locations as DTOs.
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/Locations
+        ///
+        /// </remarks>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An <see cref="IEnumerable{LocationDto}"/> of all locations as DTOs.</returns>
+
         [HttpGet]
         public async Task <IEnumerable<LocationDto>> GetLocation(CancellationToken cancellationToken)
         {
             return (await _searchService.GetAllLocationsAsync(cancellationToken)).Select(location => _mapper.Map<LocationDto>(location));
             //return _studentService.GetAllStudents().Select(student => _mapper.Map(student));
         }
+        /// <summary>
+        /// Gets the max price for a location.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/Locations/GetMaxPrice
+        ///
+        /// </remarks>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The <see cref="MaxPriceDto"/> of the location with the maximum price.</returns>
         [HttpGet("GetMaxPrice")]
         public async Task<ActionResult<MaxPriceDto>> GetMaxPrice(CancellationToken cancellationToken)
         {
@@ -56,14 +88,18 @@ namespace AirBNBAPI.Controllers
             return list.OrderByDescending(item => item.Price).First();
             //return _studentService.GetAllStudents().Select(student => _mapper.Map(student));
         }
-
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Location>>> GetLocation()
-        //{
-        //    return await _context.Location.ToListAsync();
-        //}
-
-        // GET: api/Properties/5
+        /// <summary>
+        /// Gets the detailed information for a specific location.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/Locations/GetDetails/{id}
+        ///
+        /// </remarks>
+        /// <param name="id">The ID of the location.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The <see cref="DetailedDto"/> of the specified location.</returns>
         [HttpGet("GetDetails/{id}")]
         public async Task<ActionResult<DetailedDto>> GetLocation(int id, CancellationToken cancellationToken)
         {

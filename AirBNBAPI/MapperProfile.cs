@@ -31,6 +31,13 @@ namespace Services
             CreateMap<SearchDto, Location>();
             CreateMap<Landlord, LandlordDto>().ForMember(d => d.Name, opt => opt.MapFrom(s => s.FirstName + s.LastName)).ForMember(d => d.Avatar, opt => opt.MapFrom(s => s.Avatar.Url));
             CreateMap<Image, ImageDto>().ForMember(d => d.URL, opt => opt.MapFrom(s => s.Url)).ForMember(d => d.IsCover, opt => opt.MapFrom(s => s.IsCover));
+            CreateMap<ReservationDto, Reservation>();
+            CreateMap<Reservation, PlacedReservationDto>()
+                .ForMember(dest => dest.LocationName, opt => opt.MapFrom(src => src.Location.Title))
+                .ForMember(dest => dest.CustomerName, opt => opt.MapFrom(src => $"{src.Customer.FirstName} {src.Customer.LastName}"))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Location.PricePerDay * (src.EndDate - src.StartDate).TotalDays))
+                .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => src.Discount));
+
 
         }
     }
