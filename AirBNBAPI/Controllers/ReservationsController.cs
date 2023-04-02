@@ -28,7 +28,16 @@ namespace AirBNBAPI.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Creates a new reservation for a customer at a specified location.
+        /// </summary>
+        /// <param name="reservationDto">The reservation data to create.</param>
+        /// <returns>The created reservation data.</returns>
+        /// <response code="200">Returns the created reservation data.</response>
+        /// <response code="400">If the location ID is invalid.</response>
         [HttpPost]
+        [ProducesResponseType(typeof(PlacedReservationDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<ActionResult<PlacedReservationDto>> PostReservation(ReservationDto reservationDto)
         {
             var customer = await _context.Customer.FirstOrDefaultAsync(c => c.Email == reservationDto.Email);
