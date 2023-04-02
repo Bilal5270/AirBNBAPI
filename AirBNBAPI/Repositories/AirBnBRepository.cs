@@ -26,7 +26,11 @@ namespace AirBNBAPI.Repositories
         {
             return await _context.Location.Include(location => location.Images).Include(location => location.Landlord).ToListAsync(cancellationToken);
         }
-
+        public async Task<List<Reservation>> GetReservationsByLocationAsync(int locationId, CancellationToken cancellationToken)
+        {
+            return await _context.Reservation.Where(r => r.LocationId == locationId && r.EndDate >= DateTime.Today)
+                                                 .ToListAsync(cancellationToken);
+        }
         public IEnumerable<Customer> GetAllCustomers()
         {
             return _context.Customer.ToList();
@@ -50,16 +54,16 @@ namespace AirBNBAPI.Repositories
         //{
         //    return await _context.Location.Where(p => p.PricePerDay == Max);
         //}
-        public async Task<List<Reservation>> GetReservationsByLocationAsync(int locationId, CancellationToken cancellationToken)
-        {
-            var reservations = await _context.Reservation
-                .Include(r => r.Location)
-                .Include(r => r.Customer)
-                .Where(r => r.LocationId == locationId)
-                .ToListAsync(cancellationToken);
+        //public async Task<List<Reservation>> GetReservationsByLocationAsync(int locationId, CancellationToken cancellationToken)
+        //{
+        //    var reservations = await _context.Reservation
+        //        .Include(r => r.Location)
+        //        .Include(r => r.Customer)
+        //        .Where(r => r.LocationId == locationId)
+        //        .ToListAsync(cancellationToken);
 
-            return reservations;
-        }
+        //    return reservations;
+        //}
         public Customer GetCustomer(int id)
         {
             return _context.Customer.Find(id);

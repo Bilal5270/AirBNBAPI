@@ -1,4 +1,5 @@
 ﻿using AirBnb.Model;
+using AirBNBAPI.Model.DTO;
 using AirBNBAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,10 +31,18 @@ namespace AirBNBAPI.Services
 
         //RESERVATIONS
 
-        public async Task<List<Reservation>> GetReservationsByLocationAsync(int locationId, CancellationToken cancellationToken)
+        public async Task<UnavailableDatesDto> GetUnavailableDatesAsync(int locationId, CancellationToken cancellationToken)
         {
-            return await _airBnBRepository.GetReservationsByLocationAsync(locationId, cancellationToken);
+            var reservations = await _airBnBRepository.GetReservationsByLocationAsync(locationId, cancellationToken);
+
+            var unavailableDates = reservations.SelectMany(r =>
+                Enumerable.Range(0, (r.EndDate - r.StartDate).Days + 1)
+                    .Select(i => r.StartDate.AddDays(i))
+            ).ToList();
+
+            return new UnavailableDatesDto { UnavailableDates = unavailableDates };
         }
+
         public Reservation ChangeReservation(int id, Reservation reservation)
         {
             throw new NotImplementedException();

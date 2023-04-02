@@ -109,7 +109,14 @@ namespace AirBNBAPI.Controllers
             return detailedLocation;
 
         }
-       
+
+        /// <summary>
+        /// Searches for locations that meet the specified criteria
+        /// </summary>
+        /// <param name="obj">Search criteria object</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>An enumerable list of PricedLocationDto objects that meet the specified criteria</returns>
+
         [HttpPost("Search")]
         public async Task<IEnumerable<PricedLocationDto>> Search(SearchDto? obj, CancellationToken cancellationToken)
         {
@@ -157,17 +164,17 @@ namespace AirBNBAPI.Controllers
 
 
         }
-
+        /// <summary>
+        /// Gets the unavailable dates for a specific location based on its reservations.
+        /// </summary>
+        /// <param name="locationId">The ID of the location to retrieve the unavailable dates for.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An <see cref="ActionResult{T}"/> containing the <see cref="UnavailableDatesDto"/> object with the unavailable dates.</returns>
         [HttpGet("UnAvailableDates/{locationId}")]
         public async Task<ActionResult<UnavailableDatesDto>> GetUnavailableDates(int locationId, CancellationToken cancellationToken)
         {
-            var reservations = await _searchService.GetReservationsByLocationAsync(locationId,cancellationToken);
-            var unavailableDates = reservations.SelectMany(r =>
-                Enumerable.Range(0, (r.EndDate - r.StartDate).Days + 1)
-                    .Select(i => r.StartDate.AddDays(i))
-            ).ToList();
-            var dto = new UnavailableDatesDto { UnavailableDates = unavailableDates };
-            return Ok(dto);
+            var unavailableDatesDto = await _searchService.GetUnavailableDatesAsync(locationId, cancellationToken);
+            return Ok(unavailableDatesDto);
         }
 
         // GET: api/Locations
