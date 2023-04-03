@@ -47,7 +47,7 @@ namespace AirBNBAPI.Data
 
             modelBuilder.Entity<Landlord>().HasData(
             new { FirstName = "Herman ", LastName = "Mol", Age = 55, Id = 1, AvatarId = 1 },
-            new { FirstName = "Jaap", LastName = "Keizer", Id = 2, Age = 61, AvatarId = 2 }
+            new { FirstName = "Jaap ", LastName = "Keizer", Id = 2, Age = 61, AvatarId = 2 }
 
                 );
 
@@ -60,8 +60,8 @@ namespace AirBNBAPI.Data
 
 
             modelBuilder.Entity<Image>().HasData(
-           new { Id = 1, IsCover = false, Url = "https://dq1eylutsoz4u.cloudfront.net/2019/12/20060024/adult-man-baby-boomer-clean-cut_t20_b8wV6V-800x600-50-year-old-man.jpg", LocationId = 1 },
-           new { Id = 2, IsCover = false, Url = "https://as1.ftcdn.net/v2/jpg/04/70/50/70/1000_F_470507000_FxGToXZnkwPgMYAc5KdX9SvtlYLjPhKf.jpg", LocationId = 2 },
+           new { Id = 1, IsCover = false, Url = "https://dq1eylutsoz4u.cloudfront.net/2019/12/20060024/adult-man-baby-boomer-clean-cut_t20_b8wV6V-800x600-50-year-old-man.jpg" },
+           new { Id = 2, IsCover = false, Url = "https://as1.ftcdn.net/v2/jpg/04/70/50/70/1000_F_470507000_FxGToXZnkwPgMYAc5KdX9SvtlYLjPhKf.jpg"},
            new { Id = 3, IsCover = true, Url = "https://www.chr-apartments.com/sites/default/files/styles/tile_image_cropped/public/video_thumbnails/Rwiy-8x8o5w.jpg?itok=X0MqiZeY", LocationId = 1 },
            new { Id = 4, IsCover = true, Url = "https://www.mapofjoy.nl/wp-content/uploads/2022/11/kasteel-de-haar-mapofjoy.jpg", LocationId = 2 }
                  );
