@@ -30,13 +30,22 @@ namespace AirBNBAPI.Controllers.v2._0
         }
 
         // GET: api/Locations
+        /// <summary>
+        /// Retrieves all locations with their corresponding prices
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>An enumerable list of PricedLocationDto objects</returns>
         [HttpGet]
         public async Task <IEnumerable<PricedLocationDto>> GetLocation(CancellationToken cancellationToken)
         {
             return (await _searchService.GetAllLocationsAsync(cancellationToken)).Select(location => _mapper.Map<PricedLocationDto>(location));
             
         }
-
+        /// <summary>
+        /// Retrieves the location with the highest price
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>The MaxPriceDto object of the location with the highest price</returns>
         [HttpGet("GetMaxPrice")]
         public async Task<ActionResult<MaxPriceDto>> GetMaxPrice(CancellationToken cancellationToken)
         {
@@ -44,7 +53,12 @@ namespace AirBNBAPI.Controllers.v2._0
             return list.OrderByDescending(item => item.Price).First();
             
         }
-
+        /// <summary>
+        /// Searches for locations that meet the specified criteria
+        /// </summary>
+        /// <param name="obj">Search criteria object</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>An enumerable list of PricedLocationDto objects that meet the specified criteria</returns>
         [HttpPost("Search")]
         public async Task<IEnumerable<PricedLocationDto>> Search(SearchDto? obj, CancellationToken cancellationToken)
         {
@@ -92,7 +106,12 @@ namespace AirBNBAPI.Controllers.v2._0
 
 
         }
-
+        /// <summary>
+        /// Retrieves detailed information about a location based on its ID.
+        /// </summary>
+        /// <param name="id">The ID of the location to retrieve.</param>
+        /// <param name="cancellationToken">The cancellation token to cancel the request if needed.</param>
+        /// <returns>An ActionResult containing a DetailedDto object representing the detailed information about the location.</returns>
         [HttpGet("GetDetails/{id}")]
         public async Task<ActionResult<DetailedDto>> GetLocation(int id, CancellationToken cancellationToken)
         {

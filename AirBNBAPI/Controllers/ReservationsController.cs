@@ -38,6 +38,7 @@ namespace AirBNBAPI.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(PlacedReservationDto), 200)]
         [ProducesResponseType(typeof(string), 400)]
+        [ProducesResponseType(typeof(string), 409)]
         public async Task<ActionResult<PlacedReservationDto>> PostReservation(ReservationDto reservationDto)
         {
             var customer = await _context.Customer.FirstOrDefaultAsync(c => c.Email == reservationDto.Email);
@@ -62,6 +63,16 @@ namespace AirBNBAPI.Controllers
             var reservation = _mapper.Map<Reservation>(reservationDto); // map DTO to model
             reservation.Customer = customer; // associate reservation with customer
             reservation.Location = location; // associate reservation with location
+
+            // Check availability of reservation
+            var existingReservations = await _context.Reservation.Where(r => r.LocationId == reservationDto.LocationId
+                && r.StartDate <= reservation.EndDate && r.EndDate >= reservation.StartDate).ToListAsync();
+
+            if (existingReservations.Any())
+            {
+                return Conflict("The reservation conflicts with an existing reservation.");
+            }
+
             _context.Reservation.Add(reservation); // add model to context
             await _context.SaveChangesAsync(); // save changes
 

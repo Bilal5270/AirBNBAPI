@@ -11,6 +11,7 @@ namespace AirBNBAPI.Repositories
 
         public Task<IEnumerable<Location>> GetAllLocationsAsync(CancellationToken cancellationToken);
         public Task<List<Reservation>> GetReservationsByLocationAsync(int locationId, CancellationToken cancellationToken);
+
         public Customer GetCustomer(int id);
 
         public Reservation GetReservation(int id);
