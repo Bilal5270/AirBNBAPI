@@ -60,9 +60,9 @@ namespace AirBNBAPI.Controllers
                 return BadRequest("Invalid location ID");
             }
 
-            var reservation = _mapper.Map<Reservation>(reservationDto); // map DTO to model
-            reservation.Customer = customer; // associate reservation with customer
-            reservation.Location = location; // associate reservation with location
+            var reservation = _mapper.Map<Reservation>(reservationDto); 
+            reservation.Customer = customer; 
+            reservation.Location = location; 
 
             // Check availability of reservation
             var existingReservations = await _context.Reservation.Where(r => r.LocationId == reservationDto.LocationId
@@ -73,10 +73,10 @@ namespace AirBNBAPI.Controllers
                 return Conflict("The reservation conflicts with an existing reservation.");
             }
 
-            _context.Reservation.Add(reservation); // add model to context
-            await _context.SaveChangesAsync(); // save changes
+            _context.Reservation.Add(reservation); 
+            await _context.SaveChangesAsync(); 
 
-            var placedReservationDto = _mapper.Map<PlacedReservationDto>(reservation); // map model to DTO for response
+            var placedReservationDto = _mapper.Map<PlacedReservationDto>(reservation); 
 
             return Ok(placedReservationDto);
         }
