@@ -18,13 +18,14 @@ namespace AirBNBAPI.Controllers
     public class ReservationsController : ControllerBase
     {
         
-        private readonly ISearchService _searchService;
+        private readonly IReservationService _reservationService;
+        
       
 
-        public ReservationsController( ISearchService searchService)
+        public ReservationsController( IReservationService reservationService)
         {
             
-            _searchService = searchService;
+            _reservationService = reservationService;
         
         }
 
@@ -44,7 +45,7 @@ namespace AirBNBAPI.Controllers
         {
             try
             {
-                var placedReservationDto = await _searchService.AddReservationAsync(reservationDto, cancellationToken);
+                var placedReservationDto = await _reservationService.AddReservationAsync(reservationDto, cancellationToken);
                 return Ok(placedReservationDto);
             }
             catch (ArgumentException ex)
