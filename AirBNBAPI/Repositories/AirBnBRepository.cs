@@ -12,15 +12,7 @@ namespace AirBNBAPI.Repositories
             _context= context;
         }
 
-        public IEnumerable<Landlord> GetAllLandlords()
-        {
-            return _context.Landlord.ToList();
-        }
-
-        public IEnumerable<Reservation> GetAllReservations()
-        {
-            return _context.Reservation.ToList();
-        }
+    
 
         public async Task <IEnumerable<Location>> GetAllLocationsAsync(CancellationToken cancellationToken)
         {
@@ -31,42 +23,36 @@ namespace AirBNBAPI.Repositories
             return await _context.Reservation.Where(r => r.LocationId == locationId && r.EndDate >= DateTime.Today)
                                                  .ToListAsync(cancellationToken);
         }
-        public IEnumerable<Customer> GetAllCustomers()
-        {
-            return _context.Customer.ToList();
-        }
-
-        public Landlord GetLandlord(int id)
-        {
-            return _context.Landlord.Find(id);
-        }
-
-        public Reservation GetReservation(int id)
-        {
-            return _context.Reservation.Find(id);
-        }
-
+  
         public async Task<Location> GetLocationAsync(int id, CancellationToken cancellationToken)
         {
             return await _context.Location.FindAsync(new object[] { id }, cancellationToken);
         }
-        //public async Task<Location> GetMaxPrice()
-        //{
-        //    return await _context.Location.Where(p => p.PricePerDay == Max);
-        //}
-        //public async Task<List<Reservation>> GetReservationsByLocationAsync(int locationId, CancellationToken cancellationToken)
-        //{
-        //    var reservations = await _context.Reservation
-        //        .Include(r => r.Location)
-        //        .Include(r => r.Customer)
-        //        .Where(r => r.LocationId == locationId)
-        //        .ToListAsync(cancellationToken);
-
-        //    return reservations;
-        //}
-        public Customer GetCustomer(int id)
+    
+        public async Task<List<Reservation>> GetExistingReservationsAsync(int? locationId, DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
         {
-            return _context.Customer.Find(id);
+            return await _context.Reservation.Where(r => r.LocationId == locationId
+            && r.StartDate <= endDate && r.EndDate >= startDate).ToListAsync(cancellationToken);
+        }
+
+        public async Task AddReservationAsync(Reservation reservation, CancellationToken cancellationToken)
+        {
+            await _context.Reservation.AddAsync(reservation, cancellationToken);
+        }
+        public async Task AddCustomerAsync(Customer customer, CancellationToken cancellationToken)
+        {
+            await _context.Customer.AddAsync(customer, cancellationToken);
+           
+        }
+
+        public async Task<Customer> GetCustomerByEmailAsync(string email, CancellationToken cancellationToken)
+        {
+            return await _context.Customer.FirstOrDefaultAsync(obj => obj.Email == email, cancellationToken);
+        }
+
+        public async Task SaveChanges(CancellationToken cancellationToken)
+        {
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

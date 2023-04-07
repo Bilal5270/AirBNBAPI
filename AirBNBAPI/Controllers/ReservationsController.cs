@@ -17,15 +17,16 @@ namespace AirBNBAPI.Controllers
     [ApiController]
     public class ReservationsController : ControllerBase
     {
-        private readonly AirBNBAPIContext _context;
-        private readonly ISearchService _searchService;
-        private readonly IMapper _mapper;
+        
+        private readonly IReservationService _reservationService;
+        
+      
 
-        public ReservationsController(AirBNBAPIContext context, ISearchService searchService, IMapper mapper)
+        public ReservationsController( IReservationService reservationService)
         {
-            _context = context;
-            _searchService = searchService;
-            _mapper = mapper;
+            
+            _reservationService = reservationService;
+        
         }
 
         /// <summary>
@@ -35,133 +36,27 @@ namespace AirBNBAPI.Controllers
         /// <returns>The created reservation data.</returns>
         /// <response code="200">Returns the created reservation data.</response>
         /// <response code="400">If the location ID is invalid.</response>
+        /// <response code="409">If the reservation conflicts with another one.</response>
         [HttpPost]
         [ProducesResponseType(typeof(PlacedReservationDto), 200)]
         [ProducesResponseType(typeof(string), 400)]
         [ProducesResponseType(typeof(string), 409)]
-        public async Task<ActionResult<PlacedReservationDto>> PostReservation(ReservationDto reservationDto)
+        public async Task<IActionResult> PostReservation(ReservationDto reservationDto, CancellationToken cancellationToken)
         {
-            var customer = await _context.Customer.FirstOrDefaultAsync(c => c.Email == reservationDto.Email);
-
-            if (customer == null)
+            try
             {
-                customer = new Customer
-                {
-                    FirstName = reservationDto.FirstName,
-                    LastName = reservationDto.LastName,
-                    Email = reservationDto.Email
-                };
-                _context.Customer.Add(customer);
+                var placedReservationDto = await _reservationService.AddReservationAsync(reservationDto, cancellationToken);
+                return Ok(placedReservationDto);
             }
-
-            var location = await _context.Location.FindAsync(reservationDto.LocationId);
-            if (location == null)
+            catch (ArgumentException ex)
             {
-                return BadRequest("Invalid location ID");
+                return BadRequest(ex.Message);
             }
-
-            var reservation = _mapper.Map<Reservation>(reservationDto); 
-            reservation.Customer = customer; 
-            reservation.Location = location; 
-
-            // Check availability of reservation
-            var existingReservations = await _context.Reservation.Where(r => r.LocationId == reservationDto.LocationId
-                && r.StartDate <= reservation.EndDate && r.EndDate >= reservation.StartDate).ToListAsync();
-
-            if (existingReservations.Any())
+            catch (InvalidOperationException ex)
             {
-                return Conflict("The reservation conflicts with an existing reservation.");
+                return Conflict(ex.Message);
             }
-
-            _context.Reservation.Add(reservation); 
-            await _context.SaveChangesAsync(); 
-
-            var placedReservationDto = _mapper.Map<PlacedReservationDto>(reservation); 
-
-            return Ok(placedReservationDto);
         }
-        //// GET: api/Listings
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Reservation>>> GetReservation()
-        //{
-        //    return await _context.Reservation.ToListAsync();
-        //}
 
-        // GET: api/Listings/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Reservation>> GetReservation(int id)
-        //{
-        //    var reservation = await _context.Reservation.FindAsync(id);
-
-        //    if (reservation == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return reservation;
-        //}
-
-        //// PUT: api/Listings/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutReservation(int id, Reservation reservation)
-        //{
-        //    if (id != reservation.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(reservation).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ReservationExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        //// POST: api/Listings
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
-        //{
-        //    _context.Reservation.Add(reservation);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);
-        //}
-
-        //// DELETE: api/Listings/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteReservation(int id)
-        //{
-        //    var reservation = await _context.Reservation.FindAsync(id);
-        //    if (reservation == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Reservation.Remove(reservation);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
-
-        //private bool ReservationExists(int id)
-        //{
-        //    return _context.Reservation.Any(e => e.Id == id);
-        //}
     }
 }

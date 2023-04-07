@@ -18,197 +18,102 @@ namespace AirBNBAPI.Controllers.v2._0
     [ApiController]
     public class LocationsController : ControllerBase
     {
-        private readonly AirBNBAPIContext _context;
+       
         private readonly IMapper _mapper;
         private readonly ISearchService _searchService;
 
-        public LocationsController(AirBNBAPIContext context, IMapper mapper, ISearchService searchService)
+        public LocationsController(IMapper mapper, ISearchService searchService)
         {
-            _context = context;
+            
             _mapper = mapper;
             _searchService = searchService;
         }
 
-        // GET: api/Locations
-        /// <summary>
-        /// Retrieves all locations with their corresponding prices
+       /// <summary>
+        /// Gets all locations as DTOs.
         /// </summary>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>An enumerable list of PricedLocationDto objects</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/Locations
+        ///
+        /// </remarks>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An <see cref="IEnumerable{LocationDto}"/> of all locations as DTOs.</returns>
+
         [HttpGet]
-        public async Task <IEnumerable<PricedLocationDto>> GetLocation(CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<LocationDto>>> GetPricedLocation(CancellationToken cancellationToken)
         {
-            return (await _searchService.GetAllLocationsAsync(cancellationToken)).Select(location => _mapper.Map<PricedLocationDto>(location));
-            
+            var locations = await _searchService.GetPricedLocation(cancellationToken);
+            return Ok(locations);
         }
         /// <summary>
-        /// Retrieves the location with the highest price
+        /// Gets the max price for a location.
         /// </summary>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>The MaxPriceDto object of the location with the highest price</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/Locations/GetMaxPrice
+        ///
+        /// </remarks>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The <see cref="MaxPriceDto"/> of the location with the maximum price.</returns>
         [HttpGet("GetMaxPrice")]
         public async Task<ActionResult<MaxPriceDto>> GetMaxPrice(CancellationToken cancellationToken)
         {
-            IEnumerable<MaxPriceDto> list = (await _searchService.GetAllLocationsAsync(cancellationToken)).Select(location => _mapper.Map<MaxPriceDto>(location));
-            return list.OrderByDescending(item => item.Price).First();
+           var highestprice = _searchService.GetMaxPrice(cancellationToken);
+           return await highestprice;
             
         }
+        /// <summary>
+        /// Gets the detailed information for a specific location.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     GET /api/Locations/GetDetails/{id}
+        ///
+        /// </remarks>
+        /// <param name="id">The ID of the location.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The <see cref="DetailedDto"/> of the specified location.</returns>
+        [HttpGet("GetDetails/{id}")]
+        public async Task<ActionResult<DetailedDto>> GetLocation(int id, CancellationToken cancellationToken)
+        {
+
+            var detailedlocation = await _searchService.GetDetailedLocation(id, cancellationToken);
+            return detailedlocation;
+
+        }
+
         /// <summary>
         /// Searches for locations that meet the specified criteria
         /// </summary>
         /// <param name="obj">Search criteria object</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>An enumerable list of PricedLocationDto objects that meet the specified criteria</returns>
+
         [HttpPost("Search")]
         public async Task<IEnumerable<PricedLocationDto>> Search(SearchDto? obj, CancellationToken cancellationToken)
         {
-            int? MinPrice = obj.MinPrice;
-            int? MaxPrice = obj.MaxPrice;
-            int? Room = obj.Rooms;
-
-            if (obj.MinPrice == null)
-            {
-                MinPrice = 0;
-            }
-            if (obj.MaxPrice == null)
-            {
-                MaxPrice = int.MaxValue;
-            }
-            if (obj.Rooms == null)
-            {
-                Room = 0;
-            }
-            var list = await _searchService.GetAllLocationsAsync(cancellationToken);
-            if (obj.Features == null && obj.Type == null && obj.MaxPrice == null && obj.MinPrice == null && obj.Rooms == null)
-            {
-                return list.Select(location => _mapper.Map<PricedLocationDto>(location));
-            }
-            if (obj.Features == null && obj.Type == null)
-            {
-                var filtered = list.Where(item => item.PricePerDay >= MinPrice).Where(item => item.PricePerDay <= MaxPrice).Where(item => item.Rooms >= Room);
-                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
-            }
-            if (obj.Features == null)
-            {
-                var filtered = list.Where(item => item.Type == obj.Type).Where(item => item.PricePerDay >= MinPrice).Where(item => item.PricePerDay <= MaxPrice).Where(item => item.Rooms >= Room);
-                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
-            }
-            if (obj.Type == null)
-            {
-                var filtered = list.Where(item => item.Features == obj.Features).Where(item => item.PricePerDay >= MinPrice).Where(item => item.PricePerDay <= MaxPrice).Where(item => item.Rooms >= Room);
-                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
-            }
-            else
-            {
-                var filtered = list.Where(item => item.Features == obj.Features).Where(item => item.PricePerDay >= MinPrice).Where(item => item.PricePerDay <= MaxPrice).Where(item => item.Type == obj.Type).Where(item => item.Rooms >= Room);
-                return filtered.Select(location => _mapper.Map<PricedLocationDto>(location));
-            }
-
+            return await _searchService.Search(obj, cancellationToken);
 
         }
         /// <summary>
-        /// Retrieves detailed information about a location based on its ID.
+        /// Gets the unavailable dates for a specific location based on its reservations.
         /// </summary>
-        /// <param name="id">The ID of the location to retrieve.</param>
-        /// <param name="cancellationToken">The cancellation token to cancel the request if needed.</param>
-        /// <returns>An ActionResult containing a DetailedDto object representing the detailed information about the location.</returns>
-        [HttpGet("GetDetails/{id}")]
-        public async Task<ActionResult<DetailedDto>> GetLocation(int id, CancellationToken cancellationToken)
+        /// <param name="locationId">The ID of the location to retrieve the unavailable dates for.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An <see cref="ActionResult{T}"/> containing the <see cref="UnavailableDatesDto"/> object with the unavailable dates.</returns>
+        [HttpGet("UnAvailableDates/{locationId}")]
+        public async Task<ActionResult<UnavailableDatesDto>> GetUnavailableDates(int locationId, CancellationToken cancellationToken)
         {
-
-            var specificLocation = await _searchService.GetSpecificLocationAsync(id, cancellationToken);
-            var detailedLocation = _mapper.Map<DetailedDto>(specificLocation);
-            return detailedLocation;
-
+            var unavailableDatesDto = await _searchService.GetUnavailableDatesAsync(locationId, cancellationToken);
+            return unavailableDatesDto;
         }
 
-        //// GET: api/Locations/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Location>> GetLocation(int id)
-        //{
-        //  if (_context.Location == null)
-        //  {
-        //      return NotFound();
-        //  }
-        //    var location = await _context.Location.FindAsync(id);
+        
 
-        //    if (location == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return location;
-        //}
-
-        //// PUT: api/Locations/5
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutLocation(int id, Location location)
-        //{
-        //    if (id != location.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(location).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!LocationExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        // POST: api/Locations
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Location>> PostLocation(Location location)
-        //{
-        //    if (_context.Location == null)
-        //    {
-        //        return Problem("Entity set 'AirBNBAPIContext.Location'  is null.");
-        //    }
-        //    _context.Location.Add(location);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetLocation", new { id = location.Id }, location);
-        //}
-
-        //// DELETE: api/Locations/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteLocation(int id)
-        //{
-        //    if (_context.Location == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var location = await _context.Location.FindAsync(id);
-        //    if (location == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Location.Remove(location);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
-
-        //private bool LocationExists(int id)
-        //{
-        //    return (_context.Location?.Any(e => e.Id == id)).GetValueOrDefault();
-        //}
+        
     }
 }
