@@ -1,16 +1,21 @@
 ﻿using AirBnb.Model;
 using AirBNBAPI.Model.DTO;
 using AirBNBAPI.Repositories;
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirBNBAPI.Services
 {
-    public class SearchService : ISearchService
+    public class SearchService : ISearchService 
     {
         private readonly IAirBnBRepository _airBnBRepository;
-        public SearchService (IAirBnBRepository airBnBRepository)
+        private readonly IMapper _mapper;
+        public SearchService (IAirBnBRepository airBnBRepository, IMapper mapper)
         {
             _airBnBRepository = airBnBRepository;
+            _mapper = mapper;
         }
         //LOCATIONS
         public Location ChangeLocation(int id, Location location)
@@ -43,54 +48,45 @@ namespace AirBNBAPI.Services
             return new UnavailableDatesDto { UnavailableDates = unavailableDates };
         }
 
-        public Reservation ChangeReservation(int id, Reservation reservation)
+
+        public async Task<PlacedReservationDto> AddReservationAsync(ReservationDto reservationDto, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var customer = await _airBnBRepository.GetCustomerByEmailAsync(reservationDto.Email, cancellationToken);
+
+            if (customer == null)
+            {
+                customer = new Customer
+                {
+                    FirstName = reservationDto.FirstName,
+                    LastName = reservationDto.LastName,
+                    Email = reservationDto.Email
+                };
+                await _airBnBRepository.AddCustomerAsync(customer, cancellationToken);
+            }
+
+            var location = await _airBnBRepository.GetLocationAsync(reservationDto.LocationId, cancellationToken);
+            if (location == null)
+            {
+                throw new ArgumentException("Invalid location ID");
+            }
+
+            var reservation = _mapper.Map<Reservation>(reservationDto);
+            reservation.Customer = customer;
+            reservation.Location = location;
+
+            // Check availability of reservation
+            var existingReservations = await _airBnBRepository.GetExistingReservationsAsync(reservation.LocationId, reservation.StartDate, reservation.EndDate, cancellationToken);
+            if (existingReservations.Any())
+            {
+                throw new InvalidOperationException("The reservation conflicts with an existing reservation.");
+            }
+
+            await _airBnBRepository.AddReservationAsync(reservation, cancellationToken);
+            await _airBnBRepository.SaveChanges(cancellationToken);
+
+            return _mapper.Map<PlacedReservationDto>(reservation);
         }
 
-        public IEnumerable<Reservation> GetAllReservations()
-        {
-            return _airBnBRepository.GetAllReservations();
 
-        }
-
-        public Reservation GetSpecificReservation(int id)
-        {
-            return _airBnBRepository.GetReservation(id);
-        }
-
-        //CUSTOMERS
-        public Customer ChangeCustomer(int id, Customer customer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Customer> GetAllCustomers()
-        {
-            return _airBnBRepository.GetAllCustomers();
-
-        }
-
-        public Customer GetSpecificCustomer(int id)
-        {
-            return _airBnBRepository.GetCustomer(id);
-        }
-
-        //LANDLORDS
-        public Landlord ChangeLandlord(int id, Landlord landlord)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Landlord> GetAllLandlords()
-        {
-            return _airBnBRepository.GetAllLandlords();
-
-        }
-
-        public Landlord GetSpecificLandlord(int id)
-        {
-            return _airBnBRepository.GetLandlord(id);
-        }
     }
 }
