@@ -85,6 +85,7 @@ namespace AirBNBAPI.Controllers
         public async Task<ActionResult<MaxPriceDto>> GetMaxPrice(CancellationToken cancellationToken)
         {
            var highestprice = _searchService.GetMaxPrice(cancellationToken);
+            //Deze returned geen Ok omdat het niet combineerd met de front-end, hij stuurt extra dingen op in het json object. Voor deze reden is er geen Ok return.
            return await highestprice;
             
         }
@@ -105,6 +106,7 @@ namespace AirBNBAPI.Controllers
         {
 
             var detailedlocation = await _searchService.GetDetailedLocation(id, cancellationToken);
+            //Deze returned geen Ok omdat het niet combineerd met de front-end, hij stuurt extra dingen op in het json object. Voor deze reden is er geen Ok return.
             return detailedlocation;
 
         }
