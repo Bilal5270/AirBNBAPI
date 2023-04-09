@@ -33,7 +33,7 @@ namespace AirBNBAPI.Controllers
 
         }
         /// <summary>
-        /// Gets all locations.
+        /// Gets all locations for weekopdracht 3.
         /// </summary>
         /// <remarks>
         /// Sample request:
@@ -53,7 +53,7 @@ namespace AirBNBAPI.Controllers
         }
 
         /// <summary>
-        /// Gets all locations as DTOs.
+        /// Gets all locations as DTOs. This is for weekopdracht 4.
         /// </summary>
         /// <remarks>
         /// Sample request:
@@ -71,7 +71,7 @@ namespace AirBNBAPI.Controllers
             return Ok(locations);
         }
         /// <summary>
-        /// Gets the max price for a location.
+        /// Gets the max price for a location. This is for weekopdracht 6.
         /// </summary>
         /// <remarks>
         /// Sample request:
@@ -90,7 +90,7 @@ namespace AirBNBAPI.Controllers
             
         }
         /// <summary>
-        /// Gets the detailed information for a specific location.
+        /// Gets the detailed information for a specific location. This is for weekopdracht 6.
         /// </summary>
         /// <remarks>
         /// Sample request:
@@ -112,7 +112,7 @@ namespace AirBNBAPI.Controllers
         }
 
         /// <summary>
-        /// Searches for locations that meet the specified criteria
+        /// Searches for locations that meet the specified criteria, this is for weekopdracht 6.
         /// </summary>
         /// <param name="obj">Search criteria object</param>
         /// <param name="cancellationToken">Cancellation token</param>
@@ -125,7 +125,7 @@ namespace AirBNBAPI.Controllers
 
         }
         /// <summary>
-        /// Gets the unavailable dates for a specific location based on its reservations.
+        /// Gets the unavailable dates for a specific location based on its reservations. This is for weekopdracht 7.
         /// </summary>
         /// <param name="locationId">The ID of the location to retrieve the unavailable dates for.</param>
         /// <param name="cancellationToken">The cancellation token.</param>

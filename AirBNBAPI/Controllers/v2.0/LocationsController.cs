@@ -30,7 +30,7 @@ namespace AirBNBAPI.Controllers.v2._0
         }
 
        /// <summary>
-        /// Gets all locations as DTOs.
+        /// Gets all locations as DTOs. This is for weekopdracht 5.
         /// </summary>
         /// <remarks>
         /// Sample request:
@@ -48,7 +48,7 @@ namespace AirBNBAPI.Controllers.v2._0
             return Ok(locations);
         }
         /// <summary>
-        /// Gets the max price for a location.
+        /// Gets the max price for a location. This is for weekopdracht 6.
         /// </summary>
         /// <remarks>
         /// Sample request:
@@ -66,7 +66,7 @@ namespace AirBNBAPI.Controllers.v2._0
             
         }
         /// <summary>
-        /// Gets the detailed information for a specific location.
+        /// Gets the detailed information for a specific location. This is for weekopdracht 6.
         /// </summary>
         /// <remarks>
         /// Sample request:
@@ -87,7 +87,7 @@ namespace AirBNBAPI.Controllers.v2._0
         }
 
         /// <summary>
-        /// Searches for locations that meet the specified criteria
+        /// Searches for locations that meet the specified criteria, this is for weekopdracht 6.
         /// </summary>
         /// <param name="obj">Search criteria object</param>
         /// <param name="cancellationToken">Cancellation token</param>

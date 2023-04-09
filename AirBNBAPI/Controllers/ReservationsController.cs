@@ -30,7 +30,7 @@ namespace AirBNBAPI.Controllers
         }
 
         /// <summary>
-        /// Creates a new reservation for a customer at a specified location.
+        /// Creates a new reservation for a customer at a specified location. This is for weekopdracht 7
         /// </summary>
         /// <param name="reservationDto">The reservation data to create.</param>
         /// <returns>The created reservation data.</returns>
