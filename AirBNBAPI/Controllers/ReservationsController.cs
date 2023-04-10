@@ -54,6 +54,7 @@ namespace AirBNBAPI.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                //voor de extra punten:)
                 return Conflict(ex.Message);
             }
         }

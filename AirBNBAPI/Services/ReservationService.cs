@@ -39,7 +39,7 @@ namespace AirBNBAPI.Services
             reservation.Customer = customer;
             reservation.Location = location;
 
-            // Check availability of reservation
+            // Heb een extra validatie toegevoegd..
             var existingReservations = await _airBnBRepository.GetExistingReservationsAsync(reservation.LocationId, reservation.StartDate, reservation.EndDate, cancellationToken);
             if (existingReservations.Any())
             {
