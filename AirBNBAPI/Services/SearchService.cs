@@ -63,7 +63,7 @@ namespace AirBNBAPI.Services
                     .Select(i => r.StartDate.AddDays(i))
             ).ToList();
             //Ik heb hier geen automapper toegepast omdat het hier gaat om 1 veld. Een mapper is extreem overbodig en heeft geen toegevoegde waarde.
-            return new UnavailableDatesDto { UnavailableDates = unavailableDates };
+            return new UnavailableDatesDto { UnAvailableDates = unavailableDates };
         }
 
         public async Task<IEnumerable<PricedLocationDto>> Search(SearchDto? obj, CancellationToken cancellationToken)

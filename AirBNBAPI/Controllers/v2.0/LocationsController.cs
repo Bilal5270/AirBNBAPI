@@ -112,8 +112,8 @@ namespace AirBNBAPI.Controllers.v2._0
             return unavailableDatesDto;
         }
 
-        
 
-        
+
+
     }
 }

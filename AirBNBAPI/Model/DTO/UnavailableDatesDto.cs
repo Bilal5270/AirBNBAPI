@@ -2,7 +2,7 @@
 {
     public class UnavailableDatesDto
     {
-        public List<DateTime> UnavailableDates { get; set; }
+        public List<DateTime> UnAvailableDates { get; set; }
         
     }
 }
