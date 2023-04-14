@@ -100,7 +100,7 @@ namespace AirBNBAPI.Controllers.v2._0
 
         }
         /// <summary>
-        /// Gets the unavailable dates for a specific location based on its reservations.
+        /// Gets the unavailable dates for a specific location based on its reservations. This is for weekopdracht 7.
         /// </summary>
         /// <param name="locationId">The ID of the location to retrieve the unavailable dates for.</param>
         /// <param name="cancellationToken">The cancellation token.</param>

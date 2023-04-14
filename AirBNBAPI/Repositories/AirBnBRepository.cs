@@ -12,23 +12,30 @@ namespace AirBNBAPI.Repositories
             _context= context;
         }
 
-    
 
+        public async Task<IEnumerable<Location>> GetAllLocationsNormallyAsync(CancellationToken cancellationToken)
+        {
+            return await _context.Location.ToListAsync(cancellationToken);
+        }
         public async Task <IEnumerable<Location>> GetAllLocationsAsync(CancellationToken cancellationToken)
         {
-            return await _context.Location.Include(location => location.Images).Include(location => location.Landlord).ToListAsync(cancellationToken);
+            return await _context.Location.Include(location => location.Images).Include(location => location.Landlord).ThenInclude(location => location.Avatar).ToListAsync(cancellationToken);
         }
         public async Task<List<Reservation>> GetReservationsByLocationAsync(int locationId, CancellationToken cancellationToken)
         {
             return await _context.Reservation.Where(r => r.LocationId == locationId && r.EndDate >= DateTime.Today)
                                                  .ToListAsync(cancellationToken);
         }
-  
+
         public async Task<Location> GetLocationAsync(int id, CancellationToken cancellationToken)
         {
-            return await _context.Location.FindAsync(new object[] { id }, cancellationToken);
+            return await _context.Location
+                .Include(l => l.Images) 
+                .Include(l => l.Landlord)
+                .ThenInclude(l => l.Avatar)
+                .FirstOrDefaultAsync(l => l.Id == id, cancellationToken);
         }
-    
+
         public async Task<List<Reservation>> GetExistingReservationsAsync(int? locationId, DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
         {
             return await _context.Reservation.Where(r => r.LocationId == locationId
