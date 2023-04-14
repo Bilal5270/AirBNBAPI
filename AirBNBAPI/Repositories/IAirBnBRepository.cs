@@ -4,8 +4,8 @@ namespace AirBNBAPI.Repositories
 {
     public interface IAirBnBRepository
     {
-    
 
+        public Task<IEnumerable<Location>> GetAllLocationsNormallyAsync(CancellationToken cancellationToken);
         public Task<IEnumerable<Location>> GetAllLocationsAsync(CancellationToken cancellationToken);
         public Task<List<Reservation>> GetReservationsByLocationAsync(int locationId, CancellationToken cancellationToken);
         public Task<Location> GetLocationAsync(int id, CancellationToken cancellationToken);

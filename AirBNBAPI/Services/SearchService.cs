@@ -20,7 +20,7 @@ namespace AirBNBAPI.Services
 
         public async Task<IEnumerable<Location>> GetAllLocationsAsync(CancellationToken cancellationToken)
         {
-            return await _airBnBRepository.GetAllLocationsAsync(cancellationToken);
+            return await _airBnBRepository.GetAllLocationsNormallyAsync(cancellationToken);
 
         }
 

@@ -19,10 +19,8 @@ namespace AirBNBAPI.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies();
             optionsBuilder.UseSqlServer("Data Source=(LocalDb)\\MSSQLLocalDB;Initial Catalog=AirBnbAPIDatabase;Integrated Security=SSPI;");
             base.OnConfiguring(optionsBuilder);
-
         }
         public DbSet<AirBnb.Model.Landlord> Landlord { get; set; } = default!;
 
